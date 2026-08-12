@@ -1,11 +1,11 @@
 {
-    "name": "gotrek_app",
-    "short_name": "gotrek_app",
+    "name": "GoTrek",
+    "short_name": "GoTrek",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Discover destinations, book flights and stays, and plan the whole trip in one place.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
