@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/models/catalog_item.dart';
+import '../data/repositories/catalog_repository.dart';
 import 'repository_providers.dart';
 
 /// Saved places. Writes go to disk immediately, so the list survives a
@@ -44,3 +45,21 @@ final ProviderFamily<bool, FavoriteRef> isFavoriteProvider =
 final Provider<int> favoritesCountProvider = Provider<int>(
   (Ref ref) => ref.watch(favoritesControllerProvider).value?.length ?? 0,
 );
+
+/// Saved references resolved back into catalogue items, so the Favourites
+/// screen can render one uniform list across all four content types.
+final FutureProvider<List<CatalogItem>> savedItemsProvider =
+    FutureProvider<List<CatalogItem>>((Ref ref) async {
+      final Set<FavoriteRef> refs = await ref.watch(
+        favoritesControllerProvider.future,
+      );
+      final CatalogRepository repository = ref.watch(catalogRepositoryProvider);
+
+      final List<CatalogItem> items = <CatalogItem>[];
+      for (final FavoriteRef favorite in refs) {
+        final CatalogItem? item = await repository.resolve(favorite);
+        if (item != null) items.add(item);
+      }
+      items.sort((CatalogItem a, CatalogItem b) => a.title.compareTo(b.title));
+      return items;
+    });
