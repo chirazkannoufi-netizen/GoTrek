@@ -34,11 +34,17 @@ class FlightLegTile extends StatelessWidget {
                     letterSpacing: 0.6,
                   ),
                 ),
-                const Spacer(),
-                Text(
-                  '${leg.flightNumber} · ${Formatters.dayMonth(leg.departsAt)}',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Text(
+                    '${leg.flightNumber} · '
+                    '${Formatters.dayMonth(leg.departsAt)}',
+                    textAlign: TextAlign.end,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
               ],

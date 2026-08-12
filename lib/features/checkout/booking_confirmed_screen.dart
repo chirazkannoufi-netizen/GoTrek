@@ -168,13 +168,16 @@ class _Row extends StatelessWidget {
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          const Spacer(),
-          Text(
-            value,
-            style:
-                emphasise
-                    ? theme.textTheme.titleSmall
-                    : theme.textTheme.bodyMedium,
+          const SizedBox(width: AppSpacing.lg),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style:
+                  emphasise
+                      ? theme.textTheme.titleSmall
+                      : theme.textTheme.bodyMedium,
+            ),
           ),
         ],
       ),

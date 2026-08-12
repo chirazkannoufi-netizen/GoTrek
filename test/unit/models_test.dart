@@ -28,10 +28,11 @@ void main() {
     test('deduplicates by value, so it works as a set key', () {
       // Decoded separately, these are distinct instances that must still
       // collapse to one entry — this is what keeps the saved list unique.
-      final Set<FavoriteRef> refs = <String>['hotel:x', 'hotel:x']
-          .map(FavoriteRef.decode)
-          .whereType<FavoriteRef>()
-          .toSet();
+      final Set<FavoriteRef> refs =
+          <String>[
+            'hotel:x',
+            'hotel:x',
+          ].map(FavoriteRef.decode).whereType<FavoriteRef>().toSet();
 
       expect(refs, hasLength(1));
     });

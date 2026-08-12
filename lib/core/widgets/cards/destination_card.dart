@@ -33,6 +33,15 @@ class DestinationHeroCard extends StatelessWidget {
           children: <Widget>[
             AppImage(destination.imageAsset),
             const ImageScrim(),
+            // Below the content, so the "View trip" button and the save
+            // button receive their own taps instead of this overlay
+            // swallowing them.
+            Positioned.fill(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(onTap: onTap),
+              ),
+            ),
             Positioned(
               top: AppSpacing.md,
               right: AppSpacing.md,
@@ -68,12 +77,14 @@ class DestinationHeroCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.lg),
                   Row(
                     children: <Widget>[
-                      PriceText(
-                        amount: destination.trip.pricePerTraveller,
-                        unit: 'return',
-                        onImage: true,
+                      Expanded(
+                        child: PriceText(
+                          amount: destination.trip.pricePerTraveller,
+                          unit: 'return',
+                          onImage: true,
+                        ),
                       ),
-                      const Spacer(),
+                      const SizedBox(width: AppSpacing.md),
                       FilledButton.icon(
                         onPressed: onTap,
                         icon: const Icon(Icons.near_me_outlined, size: 18),
@@ -81,19 +92,14 @@ class DestinationHeroCard extends StatelessWidget {
                         style: FilledButton.styleFrom(
                           minimumSize: const Size(0, 44),
                           padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xl,
+                            horizontal: AppSpacing.lg,
                           ),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                       ),
                     ],
                   ),
                 ],
-              ),
-            ),
-            Positioned.fill(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(onTap: onTap),
               ),
             ),
           ],
