@@ -39,9 +39,10 @@ abstract final class Formatters {
 
   static String guests(int count) => count == 1 ? '1 guest' : '$count guests';
 
-  static String distance(double km) => km >= 100
-      ? '${_thousands.format(km.round())} km away'
-      : '${km.toStringAsFixed(1)} km away';
+  static String distance(double km) =>
+      km >= 100
+          ? '${_thousands.format(km.round())} km away'
+          : '${km.toStringAsFixed(1)} km away';
 
   /// 1200 -> "1.2k", used for review counts.
   static String compactCount(int value) {

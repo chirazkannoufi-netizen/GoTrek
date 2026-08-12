@@ -13,11 +13,12 @@ class UserAccount {
   final String? phone;
 
   String get initials {
-    final List<String> parts = fullName
-        .trim()
-        .split(RegExp(r'\s+'))
-        .where((String part) => part.isNotEmpty)
-        .toList();
+    final List<String> parts =
+        fullName
+            .trim()
+            .split(RegExp(r'\s+'))
+            .where((String part) => part.isNotEmpty)
+            .toList();
     if (parts.isEmpty) return '?';
     if (parts.length == 1) return parts.first.firstLetter;
     return '${parts.first.firstLetter}${parts.last.firstLetter}';

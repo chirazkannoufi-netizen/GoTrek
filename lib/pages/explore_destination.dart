@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:gotrek_app/pages/home.dart'; 
-import 'package:gotrek_app/pages/favourites.dart'; 
-import 'package:gotrek_app/pages/user_profile.dart'; 
-import 'package:gotrek_app/pages/flight_details.dart'; 
+import 'package:gotrek_app/pages/home.dart';
+import 'package:gotrek_app/pages/favourites.dart';
+import 'package:gotrek_app/pages/user_profile.dart';
+import 'package:gotrek_app/pages/flight_details.dart';
 
 class ExploreDestinationScreen extends StatefulWidget {
   const ExploreDestinationScreen({super.key});
 
   @override
-  State<ExploreDestinationScreen> createState() => _ExploreDestinationScreenState();
+  State<ExploreDestinationScreen> createState() =>
+      _ExploreDestinationScreenState();
 }
 
 class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
-  
   final List<Map<String, dynamic>> destinations = [
     {
       'name': 'Toronto, Canada',
@@ -39,7 +39,7 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
     {
       'name': 'Russia',
       'distance': '2500 km',
-      'image': 'assets/images/russia_explore.jpg', 
+      'image': 'assets/images/russia_explore.jpg',
       'arrivalDate': 'January 15, 2024 - Monday',
       'arrivalTime': '09:00',
       'departureTime': '17:00',
@@ -50,7 +50,7 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
     {
       'name': 'Paris, France',
       'distance': '3500 km',
-      'image': 'assets/images/paris_explore.jpg', 
+      'image': 'assets/images/paris_explore.jpg',
       'arrivalDate': 'February 10, 2024 - Saturday',
       'arrivalTime': '11:00',
       'departureTime': '18:00',
@@ -61,7 +61,7 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
     {
       'name': 'Tokyo, Japan',
       'distance': '8000 km',
-      'image': 'assets/images/tokyo_explore.jpg', 
+      'image': 'assets/images/tokyo_explore.jpg',
       'arrivalDate': 'March 1, 2024 - Friday',
       'arrivalTime': '08:00',
       'departureTime': '20:00',
@@ -71,14 +71,13 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
     },
   ];
 
-  
   List<Map<String, dynamic>> _filteredDestinations = [];
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _filteredDestinations = destinations; 
+    _filteredDestinations = destinations;
     _searchController.addListener(_filterDestinations);
   }
 
@@ -91,9 +90,10 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
   void _filterDestinations() {
     String query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredDestinations = destinations.where((destination) {
-        return destination['name']!.toLowerCase().contains(query);
-      }).toList();
+      _filteredDestinations =
+          destinations.where((destination) {
+            return destination['name']!.toLowerCase().contains(query);
+          }).toList();
     });
   }
 
@@ -118,9 +118,7 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.menu, color: Colors.black),
-            onPressed: () {
-            
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -129,9 +127,12 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 10.0,
+              ),
               child: LinearProgressIndicator(
-                value: 0.7, 
+                value: 0.7,
                 backgroundColor: Colors.grey[300],
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade700),
                 minHeight: 5,
@@ -140,33 +141,32 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
             ),
             const SizedBox(height: 20),
 
-            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.grey[200], 
+                  color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: TextField(
-                  controller: _searchController, 
+                  controller: _searchController,
                   decoration: const InputDecoration(
                     hintText: 'Search places...',
                     hintStyle: TextStyle(color: Colors.grey),
                     prefixIcon: Icon(Icons.search, color: Colors.grey),
                     border: InputBorder.none,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 15, horizontal: 0),
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 0,
+                    ),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
             if (_filteredDestinations.isNotEmpty)
-              _buildExploreCard(
-                _filteredDestinations[0],
-              ),
+              _buildExploreCard(_filteredDestinations[0]),
             if (_filteredDestinations.isEmpty)
               const Padding(
                 padding: EdgeInsets.all(20.0),
@@ -194,17 +194,18 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
             ),
             const SizedBox(height: 15),
 
-            
             ..._filteredDestinations.skip(1).map((destination) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
-                child: _buildSmallDestinationCard(
-                  destination,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 8.0,
                 ),
+                child: _buildSmallDestinationCard(destination),
               );
             }).toList(),
 
-            if (_filteredDestinations.length <= 1 && _filteredDestinations.isNotEmpty)
+            if (_filteredDestinations.length <= 1 &&
+                _filteredDestinations.isNotEmpty)
               const Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Center(
@@ -223,40 +224,39 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 2,
         onTap: (index) {
-          
-          if (index == 0) { // Home
+          if (index == 0) {
+            // Home
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen()),
             );
-          } else if (index == 1) { // Favorites
+          } else if (index == 1) {
+            // Favorites
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const FavouritesScreen()),
             );
-          } else if (index == 2) { 
-            
+          } else if (index == 2) {
           } else if (index == 3) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const UserProfileScreen()),
+              MaterialPageRoute(
+                builder: (context) => const UserProfileScreen(),
+              ),
             );
           }
         },
-        selectedItemColor: Colors.blue.shade800, 
-        unselectedItemColor: Colors.grey, 
-        type: BottomNavigationBarType.fixed, 
+        selectedItemColor: Colors.blue.shade800,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border),
             label: 'Favorites',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.location_on_outlined), 
+            icon: Icon(Icons.location_on_outlined),
             label: 'Explore',
           ),
           BottomNavigationBarItem(
@@ -268,12 +268,11 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
     );
   }
 
-  
   Widget _buildExploreCard(Map<String, dynamic> destination) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
-        height: 300, 
+        height: 300,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -292,14 +291,15 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
         ),
         child: Stack(
           children: [
-            
             Positioned.fill(
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   height: 100,
                   decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(20),
+                    ),
                     gradient: LinearGradient(
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
@@ -312,7 +312,7 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
                 ),
               ),
             ),
-            
+
             Positioned(
               bottom: 20,
               left: 20,
@@ -341,16 +341,18 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FlightDetailScreen(
-                            destinationName: destination['name']!,
-                            imagePath: destination['image']!,
-                            arrivalDate: destination['arrivalDate']!,
-                            arrivalTime: destination['arrivalTime']!,
-                            departureTime: destination['departureTime']!,
-                            returnDate: destination['returnDate']!,
-                            returnDepartureTime: destination['returnDepartureTime']!,
-                            price: destination['price']!,
-                          ),
+                          builder:
+                              (context) => FlightDetailScreen(
+                                destinationName: destination['name']!,
+                                imagePath: destination['image']!,
+                                arrivalDate: destination['arrivalDate']!,
+                                arrivalTime: destination['arrivalTime']!,
+                                departureTime: destination['departureTime']!,
+                                returnDate: destination['returnDate']!,
+                                returnDepartureTime:
+                                    destination['returnDepartureTime']!,
+                                price: destination['price']!,
+                              ),
                         ),
                       );
                     },
@@ -359,7 +361,10 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
                       elevation: 0,
                     ),
                     child: const Row(
@@ -387,7 +392,6 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
     );
   }
 
-  
   Widget _buildSmallDestinationCard(Map<String, dynamic> destination) {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -405,7 +409,6 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
       ),
       child: Row(
         children: [
-        
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.asset(
@@ -432,31 +435,33 @@ class _ExploreDestinationScreenState extends State<ExploreDestinationScreen> {
                 const SizedBox(height: 5),
                 Text(
                   destination['distance']!,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
               ],
             ),
           ),
           IconButton(
-            icon: Icon(Icons.arrow_forward_ios, color: Colors.blue.shade700, size: 20),
+            icon: Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.blue.shade700,
+              size: 20,
+            ),
             onPressed: () {
-
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FlightDetailScreen(
-                    destinationName: destination['name']!,
-                    imagePath: destination['image']!,
-                    arrivalDate: destination['arrivalDate']!,
-                    arrivalTime: destination['arrivalTime']!,
-                    departureTime: destination['departureTime']!,
-                    returnDate: destination['returnDate']!,
-                    returnDepartureTime: destination['returnDepartureTime']!,
-                    price: destination['price']!,
-                  ),
+                  builder:
+                      (context) => FlightDetailScreen(
+                        destinationName: destination['name']!,
+                        imagePath: destination['image']!,
+                        arrivalDate: destination['arrivalDate']!,
+                        arrivalTime: destination['arrivalTime']!,
+                        departureTime: destination['departureTime']!,
+                        returnDate: destination['returnDate']!,
+                        returnDepartureTime:
+                            destination['returnDepartureTime']!,
+                        price: destination['price']!,
+                      ),
                 ),
               );
             },

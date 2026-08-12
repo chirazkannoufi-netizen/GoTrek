@@ -12,7 +12,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoginSelected = true;
 
-  final TextEditingController _usernameEmailController = TextEditingController();
+  final TextEditingController _usernameEmailController =
+      TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -23,11 +24,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onLoginPressed() {
-    if (_usernameEmailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+    if (_usernameEmailController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty) {
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your username/email and password.')),
+        const SnackBar(
+          content: Text('Please enter your username/email and password.'),
+        ),
       );
     }
   }
@@ -43,10 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: MediaQuery.of(context).size.height * 0.35,
               alignment: Alignment.center,
               color: Colors.blue.shade50,
-              child: Image.asset(
-                'assets/images/gotrek_logo.png',
-                height: 120,
-              ),
+              child: Image.asset('assets/images/gotrek_logo.png', height: 120),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -70,13 +71,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: _isLoginSelected ? Colors.blue.shade700 : Colors.transparent,
+                                color:
+                                    _isLoginSelected
+                                        ? Colors.blue.shade700
+                                        : Colors.transparent,
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               child: Text(
                                 'Log In',
                                 style: TextStyle(
-                                  color: _isLoginSelected ? Colors.white : Colors.blue.shade700,
+                                  color:
+                                      _isLoginSelected
+                                          ? Colors.white
+                                          : Colors.blue.shade700,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -90,18 +97,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               setState(() {
                                 _isLoginSelected = false;
                               });
-                              Navigator.pushReplacementNamed(context, '/signup');
+                              Navigator.pushReplacementNamed(
+                                context,
+                                '/signup',
+                              );
                             },
                             child: Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: !_isLoginSelected ? Colors.blue.shade700 : Colors.transparent,
+                                color:
+                                    !_isLoginSelected
+                                        ? Colors.blue.shade700
+                                        : Colors.transparent,
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               child: Text(
                                 'Sign Up',
                                 style: TextStyle(
-                                  color: !_isLoginSelected ? Colors.white : Colors.blue.shade700,
+                                  color:
+                                      !_isLoginSelected
+                                          ? Colors.white
+                                          : Colors.blue.shade700,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -133,7 +149,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: Colors.blue),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 20,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -157,7 +176,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: Colors.blue),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 20,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -197,9 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 30),
                   Row(
                     children: [
-                      Expanded(
-                        child: Divider(color: Colors.grey.shade400),
-                      ),
+                      Expanded(child: Divider(color: Colors.grey.shade400)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
@@ -207,9 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(color: Colors.grey.shade600),
                         ),
                       ),
-                      Expanded(
-                        child: Divider(color: Colors.grey.shade400),
-                      ),
+                      Expanded(child: Divider(color: Colors.grey.shade400)),
                     ],
                   ),
                   const SizedBox(height: 30),
@@ -228,21 +246,30 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {},
                         child: Text(
                           'Privacy Policy',
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           'Terms & Conditions',
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           'Help Center',
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ],

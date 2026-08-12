@@ -26,10 +26,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
         ),
         title: const Text(
           'Payment',
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -72,7 +69,10 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
           ),
           const Divider(height: 1, indent: 16, endIndent: 16),
           ListTile(
-            leading: Icon(Icons.add_circle_outline, color: Colors.blue.shade700),
+            leading: Icon(
+              Icons.add_circle_outline,
+              color: Colors.blue.shade700,
+            ),
             title: Text(
               'Add new card',
               style: TextStyle(
@@ -80,10 +80,16 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+            trailing: const Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: Colors.grey,
+            ),
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Add New Card functionality here!')),
+                const SnackBar(
+                  content: Text('Add New Card functionality here!'),
+                ),
               );
               print('Navigate to add new card screen');
             },
@@ -108,7 +114,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
         side: BorderSide(
-          color: groupValue == value ? Colors.blue.shade700 : Colors.transparent,
+          color:
+              groupValue == value ? Colors.blue.shade700 : Colors.transparent,
           width: 2,
         ),
       ),
@@ -187,17 +194,18 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                 ),
                 elevation: 0,
               ),
-              onPressed: _selectedCard == null
-                  ? null
-                  : () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PaymentSuccessScreen(),
-                        ),
-                      );
-                      print('Proceed with payment using $_selectedCard');
-                    },
+              onPressed:
+                  _selectedCard == null
+                      ? null
+                      : () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PaymentSuccessScreen(),
+                          ),
+                        );
+                        print('Proceed with payment using $_selectedCard');
+                      },
               child: const Text(
                 'Book Now',
                 style: TextStyle(

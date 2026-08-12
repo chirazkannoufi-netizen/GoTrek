@@ -188,9 +188,10 @@ abstract final class AppTheme {
 
   static TextTheme _textTheme(ColorScheme scheme) {
     final TextTheme base = Typography.material2021(colorScheme: scheme).black;
-    final TextTheme source = scheme.brightness == Brightness.dark
-        ? Typography.material2021(colorScheme: scheme).white
-        : base;
+    final TextTheme source =
+        scheme.brightness == Brightness.dark
+            ? Typography.material2021(colorScheme: scheme).white
+            : base;
 
     return source.copyWith(
       displaySmall: source.displaySmall?.copyWith(

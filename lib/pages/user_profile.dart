@@ -132,7 +132,9 @@ class UserProfileScreen extends StatelessWidget {
           } else if (index == 2) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const ExploreDestinationScreen()),
+              MaterialPageRoute(
+                builder: (context) => const ExploreDestinationScreen(),
+              ),
             );
           } else if (index == 3) {
             // Do nothing
@@ -142,10 +144,7 @@ class UserProfileScreen extends StatelessWidget {
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border),
             label: 'Favorites',
@@ -154,10 +153,7 @@ class UserProfileScreen extends StatelessWidget {
             icon: Icon(Icons.location_on_outlined),
             label: 'Explore',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );
@@ -176,7 +172,10 @@ class UserProfileScreen extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 5,
+          ),
           leading: Icon(icon, color: iconColor, size: 28),
           title: Text(
             title,
@@ -186,32 +185,33 @@ class UserProfileScreen extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          trailing: showBadge
-              ? Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Colors.orange.shade700,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    badgeText ?? '',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+          trailing:
+              showBadge
+                  ? Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.orange.shade700,
+                      shape: BoxShape.circle,
                     ),
+                    child: Text(
+                      badgeText ?? '',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                  : Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.grey[400],
+                    size: 20,
                   ),
-                )
-              : Icon(Icons.arrow_forward_ios, color: Colors.grey[400], size: 20),
           onTap: onTap,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Divider(
-            color: Colors.grey[200],
-            height: 1,
-            thickness: 1,
-          ),
+          child: Divider(color: Colors.grey[200], height: 1, thickness: 1),
         ),
       ],
     );

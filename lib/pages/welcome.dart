@@ -30,23 +30,31 @@ class _WelcomeState extends State<Welcome> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    _buttonSlideAnimation = Tween<double>(begin: 0.0, end: 0.0).animate(_buttonAnimationController);
+    _buttonSlideAnimation = Tween<double>(
+      begin: 0.0,
+      end: 0.0,
+    ).animate(_buttonAnimationController);
 
     _goPulseAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 700),
     )..repeat(reverse: true);
 
-    _goPulseAnimation = Tween<double>(begin: 0.0, end: 15.0).animate(CurvedAnimation(
-      parent: _goPulseAnimationController,
-      curve: Curves.easeInOut,
-    ));
+    _goPulseAnimation = Tween<double>(begin: 0.0, end: 15.0).animate(
+      CurvedAnimation(
+        parent: _goPulseAnimationController,
+        curve: Curves.easeInOut,
+      ),
+    );
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _maxDragExtent = _sliderContainerWidth - _goButtonSize - (_horizontalPaddingInsideContainer * 2);
+    _maxDragExtent =
+        _sliderContainerWidth -
+        _goButtonSize -
+        (_horizontalPaddingInsideContainer * 2);
   }
 
   @override
@@ -79,7 +87,8 @@ class _WelcomeState extends State<Welcome> with TickerProviderStateMixin {
     if (_dragPosition / _maxDragExtent < 0.95) {
       _startButtonSlideAnimation(0.0);
     }
-    if (!_goPulseAnimationController.isAnimating && _dragPosition < _maxDragExtent * 0.95) {
+    if (!_goPulseAnimationController.isAnimating &&
+        _dragPosition < _maxDragExtent * 0.95) {
       _goPulseAnimationController.repeat(reverse: true);
     }
   }
@@ -88,11 +97,16 @@ class _WelcomeState extends State<Welcome> with TickerProviderStateMixin {
     if (_buttonAnimationController.isAnimating) {
       _buttonAnimationController.stop();
     }
-    
+
     _buttonSlideAnimation = Tween<double>(
       begin: _dragPosition / _maxDragExtent,
       end: targetPosition / _maxDragExtent,
-    ).animate(CurvedAnimation(parent: _buttonAnimationController, curve: Curves.easeOut));
+    ).animate(
+      CurvedAnimation(
+        parent: _buttonAnimationController,
+        curve: Curves.easeOut,
+      ),
+    );
 
     _buttonAnimationController.forward().then((_) {
       setState(() {
@@ -132,10 +146,7 @@ class _WelcomeState extends State<Welcome> with TickerProviderStateMixin {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset(
-            'assets/images/background.jpg',
-            fit: BoxFit.cover,
-          ),
+          Image.asset('assets/images/background.jpg', fit: BoxFit.cover),
           Positioned(
             left: (screenWidth - _sliderContainerWidth) / 2,
             right: (screenWidth - _sliderContainerWidth) / 2,
@@ -148,15 +159,21 @@ class _WelcomeState extends State<Welcome> with TickerProviderStateMixin {
                 borderRadius: BorderRadius.circular(_sliderContainerHeight / 2),
               ),
               alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(horizontal: _horizontalPaddingInsideContainer),
+              padding: EdgeInsets.symmetric(
+                horizontal: _horizontalPaddingInsideContainer,
+              ),
               child: Stack(
                 children: <Widget>[
                   AnimatedBuilder(
-                    animation: Listenable.merge([_buttonAnimationController, _goPulseAnimationController]),
+                    animation: Listenable.merge([
+                      _buttonAnimationController,
+                      _goPulseAnimationController,
+                    ]),
                     builder: (context, child) {
                       double currentOffset = _dragPosition;
                       if (_buttonAnimationController.isAnimating) {
-                        currentOffset = _buttonSlideAnimation.value * _maxDragExtent;
+                        currentOffset =
+                            _buttonSlideAnimation.value * _maxDragExtent;
                       } else if (_dragPosition == 0.0) {
                         currentOffset += _goPulseAnimation.value;
                       }

@@ -130,22 +130,35 @@ class _SMSVerificationScreenState extends State<SMSVerificationScreen> {
                           keyboardType: TextInputType.none,
                           textAlign: TextAlign.center,
                           maxLength: 1,
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                           decoration: InputDecoration(
                             counterText: "",
                             filled: true,
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300,
+                                width: 2,
+                              ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: Colors.grey.shade400, width: 2),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade400,
+                                width: 2,
+                              ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: Colors.blue.shade700, width: 2),
+                              borderSide: BorderSide(
+                                color: Colors.blue.shade700,
+                                width: 2,
+                              ),
                             ),
                           ),
                           onTap: () {
@@ -262,12 +275,21 @@ class _SMSVerificationScreenState extends State<SMSVerificationScreen> {
           ],
         ),
         alignment: Alignment.center,
-        child: isDelete
-            ? const Icon(Icons.backspace_outlined, color: Colors.black, size: 30)
-            : Text(
-                text,
-                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
-              ),
+        child:
+            isDelete
+                ? const Icon(
+                  Icons.backspace_outlined,
+                  color: Colors.black,
+                  size: 30,
+                )
+                : Text(
+                  text,
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
       ),
     );
   }

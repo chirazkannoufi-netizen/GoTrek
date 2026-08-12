@@ -7,8 +7,7 @@ class FavouritesScreen extends StatelessWidget {
   const FavouritesScreen({super.key});
 
   @override
-  Widget build(BuildContext
-      context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -56,7 +55,9 @@ class FavouritesScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
                       (Route<dynamic> route) => false,
                     );
                   },
@@ -94,12 +95,16 @@ class FavouritesScreen extends StatelessWidget {
           } else if (index == 2) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const ExploreDestinationScreen()),
+              MaterialPageRoute(
+                builder: (context) => const ExploreDestinationScreen(),
+              ),
             );
           } else if (index == 3) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const UserProfileScreen()),
+              MaterialPageRoute(
+                builder: (context) => const UserProfileScreen(),
+              ),
             );
           }
         },
@@ -107,10 +112,7 @@ class FavouritesScreen extends StatelessWidget {
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favorites',

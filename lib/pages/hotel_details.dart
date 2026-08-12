@@ -21,7 +21,8 @@ class HotelDetailsScreen extends StatelessWidget {
     this.numberOfReviews = 150,
     this.description =
         'This is a beautiful hotel offering an exceptional stay experience. It boasts modern amenities, comfortable rooms, and excellent service. Located conveniently, it provides easy access to local attractions and the beach.',
-    required this.hotel, required this.price,
+    required this.hotel,
+    required this.price,
   });
 
   final String price;
@@ -41,7 +42,10 @@ class HotelDetailsScreen extends StatelessWidget {
         ),
         title: Text(
           hotelName,
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -95,10 +99,7 @@ class HotelDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     '(For 01 Night/Room)',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 10),
                   Row(
@@ -107,10 +108,7 @@ class HotelDetailsScreen extends StatelessWidget {
                       const SizedBox(width: 5),
                       Text(
                         '$rating ($numberOfReviews Reviews)',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[700],
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                       ),
                     ],
                   ),
@@ -126,10 +124,7 @@ class HotelDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     description,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -189,9 +184,10 @@ class HotelDetailsScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PaymentMethodScreen(
-                                totalPrice: pricePerNight,
-                              ),
+                              builder:
+                                  (context) => PaymentMethodScreen(
+                                    totalPrice: pricePerNight,
+                                  ),
                             ),
                           );
                         },
@@ -228,15 +224,13 @@ class HotelDetailsScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Row(
         children: [
-          Icon(Icons.check_circle_outline, color: Colors.green.shade600, size: 20),
-          const SizedBox(width: 10),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[700],
-            ),
+          Icon(
+            Icons.check_circle_outline,
+            color: Colors.green.shade600,
+            size: 20,
           ),
+          const SizedBox(width: 10),
+          Text(text, style: TextStyle(fontSize: 16, color: Colors.grey[700])),
         ],
       ),
     );

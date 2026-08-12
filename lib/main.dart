@@ -35,16 +35,19 @@ class GoTrekApp extends StatelessWidget {
         '/': (context) => const Welcome(),
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignUpScreen(),
-        '/sms_verification': (context) => const SMSVerificationScreen(phoneNumber: '0655286003'),
+        '/sms_verification':
+            (context) => const SMSVerificationScreen(phoneNumber: '0655286003'),
         '/home': (context) => const HomeScreen(),
         '/explore_destination': (context) => const ExploreDestinationScreen(),
-        '/flight_details': (context) => const FlightDetailScreen(destinationName: '', imagePath: ''),
+        '/flight_details':
+            (context) =>
+                const FlightDetailScreen(destinationName: '', imagePath: ''),
         '/hotel_listing': (context) => const HotelListingScreen(),
-        '/payment_method': (context) => const PaymentMethodScreen(totalPrice: ''),
+        '/payment_method':
+            (context) => const PaymentMethodScreen(totalPrice: ''),
         '/payment_success': (context) => const PaymentSuccessScreen(),
         '/favourites': (context) => const FavouritesScreen(),
         '/user_profile': (context) => const UserProfileScreen(),
-       
       },
     );
   }

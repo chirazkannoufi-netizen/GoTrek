@@ -14,7 +14,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneEmailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -30,14 +31,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SMSVerificationScreen(
-            phoneNumber: _phoneEmailController.text,
-          ),
+          builder:
+              (context) => SMSVerificationScreen(
+                phoneNumber: _phoneEmailController.text,
+              ),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your phone number or email.')),
+        const SnackBar(
+          content: Text('Please enter your phone number or email.'),
+        ),
       );
     }
   }
@@ -53,10 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: MediaQuery.of(context).size.height * 0.35,
               alignment: Alignment.center,
               color: Colors.blue.shade50,
-              child: Image.asset(
-                'assets/images/gotrek_logo.png',
-                height: 120,
-              ),
+              child: Image.asset('assets/images/gotrek_logo.png', height: 120),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -81,13 +82,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: _isLoginSelected ? Colors.blue.shade700 : Colors.transparent,
+                                color:
+                                    _isLoginSelected
+                                        ? Colors.blue.shade700
+                                        : Colors.transparent,
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               child: Text(
                                 'Log In',
                                 style: TextStyle(
-                                  color: _isLoginSelected ? Colors.white : Colors.blue.shade700,
+                                  color:
+                                      _isLoginSelected
+                                          ? Colors.white
+                                          : Colors.blue.shade700,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -105,13 +112,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: !_isLoginSelected ? Colors.blue.shade700 : Colors.transparent,
+                                color:
+                                    !_isLoginSelected
+                                        ? Colors.blue.shade700
+                                        : Colors.transparent,
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               child: Text(
                                 'Sign Up',
                                 style: TextStyle(
-                                  color: !_isLoginSelected ? Colors.white : Colors.blue.shade700,
+                                  color:
+                                      !_isLoginSelected
+                                          ? Colors.white
+                                          : Colors.blue.shade700,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -142,7 +155,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: Colors.blue),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 20,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -166,7 +182,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: Colors.blue),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 20,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -190,7 +209,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: Colors.blue),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 20,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -214,7 +236,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(color: Colors.blue),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 20,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 30),
@@ -243,9 +268,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 30),
                   Row(
                     children: [
-                      Expanded(
-                        child: Divider(color: Colors.grey.shade400),
-                      ),
+                      Expanded(child: Divider(color: Colors.grey.shade400)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
@@ -253,9 +276,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           style: TextStyle(color: Colors.grey.shade600),
                         ),
                       ),
-                      Expanded(
-                        child: Divider(color: Colors.grey.shade400),
-                      ),
+                      Expanded(child: Divider(color: Colors.grey.shade400)),
                     ],
                   ),
                   const SizedBox(height: 30),
@@ -274,21 +295,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onPressed: () {},
                         child: Text(
                           'Privacy Policy',
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           'Terms & Conditions',
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           'Help Center',
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ],

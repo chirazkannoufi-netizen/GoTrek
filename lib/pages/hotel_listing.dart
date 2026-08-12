@@ -21,7 +21,15 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
       'image': 'assets/images/the_plaza_hotel.jpg',
       'description':
           'The Plaza Hotel is a landmark luxury hotel and condominium apartment building in Midtown Manhattan in New York City. It was built in 1907. It is at the western side of Grand Army Plaza, just across from Central Park, and at the southeastern corner of Central Park South and Fifth Avenue. It is one of the most famous hotels in the world, known for its elegant design and rich history.',
-      'facilities': ['Free Wi-Fi', 'Pool', 'Breakfast', 'Gym', 'Spa', 'Restaurant', 'Concierge Service']
+      'facilities': [
+        'Free Wi-Fi',
+        'Pool',
+        'Breakfast',
+        'Gym',
+        'Spa',
+        'Restaurant',
+        'Concierge Service',
+      ],
     },
     {
       'name': 'The Ritz-Carlton New York, Central Park',
@@ -32,7 +40,14 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
       'image': 'assets/images/ritz_carlton_central_park.jpg',
       'description':
           'Overlooking Central Park, this upscale hotel with an ornate facade is a 3-minute walk from a subway station and 5 minutes on foot from Carnegie Hall. Elegant rooms feature Italian marble bathrooms, flat-screen TVs, and Wi-Fi access. Guests can enjoy stunning park views and exceptional service.',
-      'facilities': ['Free Wi-Fi', 'Gym', 'Restaurant', 'Concierge Service', 'Room Service', 'Bar']
+      'facilities': [
+        'Free Wi-Fi',
+        'Gym',
+        'Restaurant',
+        'Concierge Service',
+        'Room Service',
+        'Bar',
+      ],
     },
     {
       'name': 'Baccarat Hotel New York',
@@ -43,7 +58,14 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
       'image': 'assets/images/baccarat_hotel.jpg',
       'description':
           'Set across the street from the Museum of Modern Art, this upscale hotel is an 8-minute walk from Central Park and a 10-minute walk from Grand Central Terminal. Posh rooms feature floor-to-ceiling windows, custom-made furnishings, and Baccarat crystal accents. It offers a unique blend of luxury and art.',
-      'facilities': ['Free Wi-Fi', 'Indoor Pool', 'Bar', 'Room Service', 'Spa', 'Fitness Center']
+      'facilities': [
+        'Free Wi-Fi',
+        'Indoor Pool',
+        'Bar',
+        'Room Service',
+        'Spa',
+        'Fitness Center',
+      ],
     },
     {
       'name': 'The Peninsula New York',
@@ -54,7 +76,14 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
       'image': 'assets/images/the_peninsula_hotel.jpg',
       'description':
           'This grand Midtown hotel is a 3-minute walk from 5th Avenue-53rd Street subway station and a 9-minute walk from Central Park. Refined rooms feature marble bathrooms, flat-screen TVs, minibars, and complimentary Wi-Fi. Known for its impeccable service and rooftop pool.',
-      'facilities': ['Free Wi-Fi', 'Spa', 'Rooftop Pool', 'Fitness Center', 'Restaurant', 'Bar']
+      'facilities': [
+        'Free Wi-Fi',
+        'Spa',
+        'Rooftop Pool',
+        'Fitness Center',
+        'Restaurant',
+        'Bar',
+      ],
     },
     {
       'name': 'The Carlyle, A Rosewood Hotel',
@@ -65,7 +94,14 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
       'image': 'assets/images/the_carlyle_hotel.jpg',
       'description':
           'Overlooking Central Park, this iconic, upscale hotel on the Upper East Side is a 3-minute walk from the 77th Street subway station and a 12-minute walk from the Metropolitan Museum of Art. Elegant rooms feature custom-made furnishings, flat-screen TVs, and minibars. It embodies classic New York glamour and discretion.',
-      'facilities': ['Free Wi-Fi', 'Fitness Center', 'Bar', 'Room Service', 'Spa', 'Live Music']
+      'facilities': [
+        'Free Wi-Fi',
+        'Fitness Center',
+        'Bar',
+        'Room Service',
+        'Spa',
+        'Live Music',
+      ],
     },
   ];
 
@@ -123,8 +159,10 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
                       hintStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Icon(Icons.search, color: Colors.grey),
                       border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 0),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 0,
+                      ),
                     ),
                   ),
                 ),
@@ -137,7 +175,10 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 10.0,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -148,18 +189,20 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
                     Text(
                       'Sort By',
                       style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                        color: Colors.grey[600],
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
                 Text(
                   'Price (Low to High)',
                   style: TextStyle(
-                      color: Colors.blue.shade700,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500),
+                    color: Colors.blue.shade700,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
@@ -226,7 +269,13 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
   }
 
   Widget _buildHotelCard(
-      String name, String location, double rating, int price, String imagePath, int reviews) {
+    String name,
+    String location,
+    double rating,
+    int price,
+    String imagePath,
+    int reviews,
+  ) {
     final hotelData = hotels.firstWhere((h) => h['name'] == name);
 
     return Container(
@@ -274,10 +323,7 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
                   const SizedBox(height: 5),
                   Text(
                     location,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -289,7 +335,9 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
                       Text(
                         '$rating (${reviews} Reviews)',
                         style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -300,25 +348,27 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
                       Text(
                         '\$${price}/Room/Night',
                         style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue.shade700),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue.shade700,
+                        ),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => HotelDetailsScreen(
-                                hotelName: hotelData['name']!,
-                                hotelImage: hotelData['image']!,
-                                price: hotelData['price']!,
-                                location: hotelData['location']!,
-                                rating: hotelData['rating']!,
-                                numberOfReviews: hotelData['reviews']!,
-                                description: hotelData['description']!,
-                                hotel: hotelData,
-                              ),
+                              builder:
+                                  (context) => HotelDetailsScreen(
+                                    hotelName: hotelData['name']!,
+                                    hotelImage: hotelData['image']!,
+                                    price: hotelData['price']!,
+                                    location: hotelData['location']!,
+                                    rating: hotelData['rating']!,
+                                    numberOfReviews: hotelData['reviews']!,
+                                    description: hotelData['description']!,
+                                    hotel: hotelData,
+                                  ),
                             ),
                           );
                         },
@@ -329,11 +379,17 @@ class _HotelListingScreenState extends State<HotelListingScreen> {
                           ),
                           elevation: 0,
                           minimumSize: Size.zero,
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6), // Smaller padding for smaller text
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ), // Smaller padding for smaller text
                         ),
                         child: const Text(
                           'Book Now',
-                          style: TextStyle(fontSize: 12, color: Colors.white), // Smaller font size
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ), // Smaller font size
                         ),
                       ),
                     ],

@@ -115,14 +115,15 @@ class AuthRepository {
 
   static String _nameFromEmail(String email) {
     final String local = email.trim().split('@').first;
-    final List<String> words = local
-        .split(RegExp(r'[._-]+'))
-        .where((String word) => word.isNotEmpty)
-        .map(
-          (String word) =>
-              word[0].toUpperCase() + word.substring(1).toLowerCase(),
-        )
-        .toList();
+    final List<String> words =
+        local
+            .split(RegExp(r'[._-]+'))
+            .where((String word) => word.isNotEmpty)
+            .map(
+              (String word) =>
+                  word[0].toUpperCase() + word.substring(1).toLowerCase(),
+            )
+            .toList();
     return words.isEmpty ? 'Traveller' : words.join(' ');
   }
 }

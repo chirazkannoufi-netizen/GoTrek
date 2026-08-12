@@ -27,9 +27,7 @@ class BookingRepository {
         continue;
       }
     }
-    bookings.sort(
-      (Booking a, Booking b) => b.createdAt.compareTo(a.createdAt),
-    );
+    bookings.sort((Booking a, Booking b) => b.createdAt.compareTo(a.createdAt));
     return bookings;
   }
 
@@ -43,10 +41,11 @@ class BookingRepository {
 
   /// A human-readable booking reference, e.g. `GT-7KQ4M2`.
   String newReference() {
-    final String body = List<String>.generate(
-      6,
-      (_) => _referenceAlphabet[_random.nextInt(_referenceAlphabet.length)],
-    ).join();
+    final String body =
+        List<String>.generate(
+          6,
+          (_) => _referenceAlphabet[_random.nextInt(_referenceAlphabet.length)],
+        ).join();
     return 'GT-$body';
   }
 

@@ -76,8 +76,12 @@ class FlightDetailScreen extends StatelessWidget {
                 mainTextColor: Colors.black,
               ),
               const SizedBox(height: 20),
-              _buildDetailRow('Time', '',
-                  mainText: arrivalTime, mainTextColor: Colors.black),
+              _buildDetailRow(
+                'Time',
+                '',
+                mainText: arrivalTime,
+                mainTextColor: Colors.black,
+              ),
               const SizedBox(height: 25),
               _buildFlightSection(
                 title: 'Flight on: $arrivalDate',
@@ -103,7 +107,11 @@ class FlightDetailScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const PaymentMethodScreen(totalPrice: '',)),
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  const PaymentMethodScreen(totalPrice: ''),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -131,8 +139,12 @@ class FlightDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String value,
-      {String? mainText, Color? mainTextColor}) {
+  Widget _buildDetailRow(
+    String label,
+    String value, {
+    String? mainText,
+    Color? mainTextColor,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -222,21 +234,14 @@ class FlightDetailScreen extends StatelessWidget {
                   ),
                   Text(
                     departureLocation,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
                 ],
               ),
               Column(
                 children: [
                   Icon(Icons.flight, color: Colors.blue.shade700, size: 30),
-                  Container(
-                    width: 80,
-                    height: 1,
-                    color: Colors.grey[300],
-                  ),
+                  Container(width: 80, height: 1, color: Colors.grey[300]),
                 ],
               ),
               Column(
@@ -252,10 +257,7 @@ class FlightDetailScreen extends StatelessWidget {
                   ),
                   Text(
                     arrivalLocation,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
                 ],
               ),

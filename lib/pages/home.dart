@@ -28,7 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (index == 2) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const ExploreDestinationScreen()),
+        MaterialPageRoute(
+          builder: (context) => const ExploreDestinationScreen(),
+        ),
       );
     } else if (index == 3) {
       Navigator.push(
@@ -61,7 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ExploreDestinationScreen()),
+                        MaterialPageRoute(
+                          builder:
+                              (context) => const ExploreDestinationScreen(),
+                        ),
                       );
                     },
                     child: Row(
@@ -72,19 +77,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               'Location',
                               style: TextStyle(
-                                  fontSize: 14, color: Colors.grey[600]),
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                              ),
                             ),
                             const Row(
                               children: [
                                 Text(
                                   'New York, USA',
                                   style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                                Icon(Icons.keyboard_arrow_down,
-                                    color: Colors.black54),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.black54,
+                                ),
                               ],
                             ),
                           ],
@@ -98,8 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.notifications_none,
-                        color: Colors.black87),
+                    child: const Icon(
+                      Icons.notifications_none,
+                      color: Colors.black87,
+                    ),
                   ),
                 ],
               ),
@@ -119,8 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           hintStyle: TextStyle(color: Colors.grey),
                           prefixIcon: Icon(Icons.search, color: Colors.grey),
                           border: InputBorder.none,
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 15, horizontal: 0),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 0,
+                          ),
                         ),
                       ),
                     ),
@@ -133,8 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.blue.shade800,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: const Icon(Icons.filter_list,
-                        color: Colors.white, size: 28),
+                    child: const Icon(
+                      Icons.filter_list,
+                      color: Colors.white,
+                      size: 28,
+                    ),
                   ),
                 ],
               ),
@@ -313,10 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border),
             label: 'Favorites',
@@ -363,7 +377,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMostVisitedCard(
-      String title, String location, String imagePath, double rating) {
+    String title,
+    String location,
+    String imagePath,
+    double rating,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(right: 15.0),
       child: Container(
@@ -384,8 +402,9 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(15)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(15),
+              ),
               child: Image.asset(
                 imagePath,
                 height: 120,
@@ -421,7 +440,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         rating.toString(),
                         style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -440,9 +461,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (title == 'Hotel') {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => const HotelListingScreen(),
-            ),
+            MaterialPageRoute(builder: (context) => const HotelListingScreen()),
           );
         }
       },
@@ -504,8 +523,9 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(15)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(15),
+              ),
               child: Image.asset(
                 imagePath,
                 height: 100,

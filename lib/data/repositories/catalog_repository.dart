@@ -71,8 +71,7 @@ class CatalogRepository {
     return _experiences ??= SeedCatalog.experiences(now: _now);
   }
 
-  Future<List<PaymentCard>> paymentCards() async =>
-      SeedCatalog.paymentCards();
+  Future<List<PaymentCard>> paymentCards() async => SeedCatalog.paymentCards();
 
   /// Turns a saved reference back into the item it points at, or `null` if the
   /// item is no longer in the catalogue.
