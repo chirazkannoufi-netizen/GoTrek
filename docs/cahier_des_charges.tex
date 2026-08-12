@@ -1,0 +1,190 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{hyperref}
+\geometry{margin=1in}
+\title{Cahier des Charges : Application Mobile pour les Services de Tourisme}
+\author{- Bouzidi Hichem \\ - Rouag Younes \\ - Kannoufi Chiraz Lina \\ - Dhia el Din}
+\date{9 mars 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Présentation du Projet}
+
+\subsection{Contexte et Objectifs}
+L’objectif de ce projet est de développer une application mobile innovante qui centralise les services touristiques pour faciliter l’organisation des séjours des touristes. Cette plateforme permettra également aux prestataires de services (hôtels, agences de voyage, guides touristiques, etc.) de promouvoir leurs offres et d’interagir directement avec les touristes.
+
+\subsection{Public Cible}
+\begin{itemize}
+    \item Touristes nationaux et internationaux
+    \item Hôtels, agences de voyage, guides touristiques
+\end{itemize}
+
+\section{Fonctionnalités de l’Application}
+
+\subsection{Pour les Touristes}
+
+\subsubsection{Recherche et Sélection de Villes}
+\begin{itemize}
+    \item Affichage des villes disponibles avec des informations détaillées (météo, culture, événements).
+    \item Possibilité d’appliquer des filtres (budget, préférences culturelles, météo, etc.).
+\end{itemize}
+
+\subsubsection{Réservation d’Hébergements}
+\begin{itemize}
+    \item Recherche et réservation d’hôtels, appartements et maisons d’hôtes.
+    \item Filtres par prix, étoiles, commodités (Wi-Fi, piscine, parking, etc.).
+\end{itemize}
+
+\subsubsection{Moyens de Transport}
+\begin{itemize}
+    \item Comparaison et réservation de moyens de transport (location de voitures, billets de train, bus, vols).
+    \item Intégration avec des services de transport locaux.
+\end{itemize}
+
+\subsubsection{Sites Historiques et Patrimoine Culturel}
+\begin{itemize}
+    \item Présentation détaillée des sites historiques, musées et monuments.
+    \item Réservation en ligne pour les événements culturels et excursions.
+\end{itemize}
+
+\subsubsection{Avis et Notation}
+\begin{itemize}
+    \item Les touristes peuvent noter et laisser des avis sur les services utilisés.
+    \item Système de notation basé sur des étoiles et des commentaires.
+\end{itemize}
+
+\subsection{Pour les Fournisseurs de Services}
+
+\subsubsection{Création de Compte}
+\begin{itemize}
+    \item Possibilité pour les fournisseurs (hôtels, guides, agences, etc.) de créer un compte et publier leurs services.
+\end{itemize}
+
+\subsubsection{Gestion des Offres}
+\begin{itemize}
+    \item Ajout, modification et suppression des offres (ex : chambres d’hôtel, excursions).
+    \item Affichage des disponibilités en temps réel.
+\end{itemize}
+
+\subsubsection{Communication avec les Touristes}
+\begin{itemize}
+    \item Messagerie intégrée pour répondre aux demandes des touristes.
+    \item Notifications pour les nouvelles réservations ou demandes.
+\end{itemize}
+
+\subsubsection{Promotion des Services}
+\begin{itemize}
+    \item Mise en avant des offres spéciales et réductions.
+    \item Intégration avec les réseaux sociaux pour une meilleure visibilité.
+\end{itemize}
+
+\section{Modélisation avec UML}
+\begin{itemize}
+    \item Diagramme de Cas d’Utilisation : Identification des interactions entre utilisateurs et système.
+    \item Diagramme de Séquence : Description des interactions dynamiques.
+    \begin{itemize}
+        \item Diagramme de séquence de touriste
+        \item Diagramme de séquence des fournisseurs
+    \end{itemize}
+    \item Diagramme de Classes : Modélisation des entités et relations.
+\end{itemize}
+
+\section{Exigences Techniques}
+
+\subsection{Technologies Utilisées}
+
+\subsubsection*{Front-end}
+\begin{itemize}
+    \item \textbf{HTML}: Langage standard utilisé pour créer et structurer le contenu des pages web.
+    \item \textbf{CSS}: Utilisé pour décrire la présentation d’un document HTML.
+    \item \textbf{JavaScript}: Permet de rendre les pages web interactives et dynamiques.
+    \item \textbf{Flutter}: Framework open-source de Google pour développer des applications mobiles, web et de bureau.
+\end{itemize}
+
+\subsubsection*{Back-end}
+\begin{itemize}
+    \item \textbf{Node.js}: Environnement d’exécution JavaScript côté serveur.
+\end{itemize}
+
+\subsubsection*{Base de données}
+\begin{itemize}
+    \item \textbf{PostgreSQL}: SGBDR open-source performant et fiable.
+\end{itemize}
+
+\subsubsection*{Hébergement}
+\begin{itemize}
+    \item \textbf{Firebase}: Plateforme de développement d’applications mobile et web proposée par Google.
+\end{itemize}
+
+\subsubsection*{Éditeurs de Code}
+\begin{itemize}
+    \item \textbf{VS Code}: Éditeur de code populaire et léger avec de nombreuses extensions.
+    \item \textbf{Android Studio}: IDE officiel pour le développement Android, également utilisable avec Flutter.
+\end{itemize}
+
+\subsection{Compatibilité}
+\begin{itemize}
+    \item Application disponible sur Android et web
+    \item Interface responsive et ergonomique
+\end{itemize}
+
+\subsection{Sécurité}
+\begin{itemize}
+    \item Authentification sécurisée (OAuth 2.0, JWT)
+    \item Protection des données personnelles et conformité au RGPD
+    \item Cryptage des transactions en ligne
+\end{itemize}
+
+\section{Déroulement du Projet}
+
+\subsection{Étapes du Développement}
+\begin{enumerate}
+    \item \textbf{Phase 1 : Planification}
+    \begin{itemize}
+        \item Analyse des besoins
+        \item Rédaction du cahier des charges
+    \end{itemize}
+    \item \textbf{Phase 2 : Conception}
+    \begin{itemize}
+        \item Modélisation UML
+        \item Conception de la base de données
+    \end{itemize}
+    \item \textbf{Phase 3 : Développement}
+    \begin{itemize}
+        \item Développement Front-end et Back-end
+        \item Intégration des API externes
+    \end{itemize}
+    \item \textbf{Phase 4 : Tests et Déploiement}
+    \begin{itemize}
+        \item Tests unitaires et d’intégration
+        \item Optimisation et corrections
+    \end{itemize}
+\end{enumerate}
+
+\section{Contraintes et Risques}
+
+\subsection{Contraintes}
+\begin{itemize}
+    \item Respect des délais de développement
+    \item Budget limité
+    \item Sécurité et respect des réglementations
+\end{itemize}
+
+\subsection{Risques}
+\begin{itemize}
+    \item Problèmes d’intégration des API
+    \item Compatibilité entre les différentes plateformes
+    \item Adoption par les utilisateurs et concurrence sur le marché
+\end{itemize}
+
+\section{Conclusion}
+
+Ce cahier des charges décrit les spécifications et les exigences pour la mise en place d’une application mobile destinée aux services de tourisme. En centralisant les services touristiques et en facilitant la communication entre touristes et prestataires, cette solution vise à améliorer l’expérience des voyageurs et à dynamiser le secteur du tourisme.
+
+\end{document}
