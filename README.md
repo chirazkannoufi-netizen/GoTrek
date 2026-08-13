@@ -133,7 +133,7 @@ flutter test
 
 ## Documentation
 
-- [Cahier des charges (full spec)](docs/cahier_des_charges.pdf)
+- [Cahier des charges (full spec)](docs/cahier_des_charges.pdf) — **the maintained version**: cover, table of contents, numbered sections, each UML diagram on its own page (the class diagram landscape), plus an annexe recording the current state of the app. `docs/cahier_des_charges.tex` is the original LaTeX source and is no longer kept in sync with it.
 - [Use case diagram](docs/diagrams/use_case_diagram.png)
 - [Class diagram](docs/diagrams/class_diagram.png)
 - [Sequence diagram — Tourist flow](docs/diagrams/sequence_diagram_tourist.png)
