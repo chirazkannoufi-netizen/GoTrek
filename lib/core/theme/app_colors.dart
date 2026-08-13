@@ -8,6 +8,13 @@ abstract final class AppColors {
   static const Color brand = Color(0xFF1565C0);
   static const Color brandDeep = Color(0xFF0D47A1);
 
+  /// The blue in `assets/images/gotrek_logo.png`, taken straight from the
+  /// artwork: it is the single most common opaque pixel in the file
+  /// (13,492 px sit within a few units of it). Used wherever the brand blue
+  /// has to match the logo exactly — the welcome tagline, and the same value
+  /// the cahier des charges uses.
+  static const Color logoBlue = Color(0xFF1E4A6F);
+
   /// Ratings, prices and other "value" accents.
   static const Color accent = Color(0xFFF5A524);
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gotrek_app/core/theme/app_colors.dart';
 import 'package:gotrek_app/core/theme/app_fonts.dart';
 import 'package:gotrek_app/features/onboarding/welcome_screen.dart';
 import 'package:gotrek_app/features/onboarding/widgets/takeoff_slider.dart';
@@ -36,6 +37,20 @@ void main() {
 
     expect(tagline.style?.fontFamily, AppFonts.display);
     expect(tagline.style?.fontStyle, FontStyle.italic);
+  });
+
+  testWidgets('the tagline is painted in the logo blue, not the text colour', (
+    WidgetTester tester,
+  ) async {
+    await pumpWelcome(tester);
+
+    final Text tagline = tester.widget<Text>(
+      find.text("Let's make our life so life"),
+    );
+
+    // Sampled from assets/images/gotrek_logo.png.
+    expect(AppColors.logoBlue, const Color(0xFF1E4A6F));
+    expect(tagline.style?.color, AppColors.logoBlue);
   });
 
   testWidgets('the slide control carries an aeroplane', (

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app/app_routes.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_fonts.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/app_image.dart';
@@ -73,7 +74,7 @@ class WelcomeScreen extends StatelessWidget {
                         Text(
                           "Let's make our life so life",
                           textAlign: TextAlign.center,
-                          style: AppFonts.tagline(color: scheme.onSurface),
+                          style: AppFonts.tagline(color: AppColors.logoBlue),
                         ),
                       ],
                     ),
