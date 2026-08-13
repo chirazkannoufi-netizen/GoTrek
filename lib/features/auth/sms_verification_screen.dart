@@ -11,9 +11,16 @@ import 'sign_up_success_screen.dart';
 
 /// Four-digit confirmation with the on-screen keypad from the original design.
 class SmsVerificationScreen extends ConsumerStatefulWidget {
-  const SmsVerificationScreen({super.key, required this.pending});
+  const SmsVerificationScreen({
+    super.key,
+    required this.pending,
+    this.returnOnSuccess = false,
+  });
 
   final PendingSignUp pending;
+
+  /// See [LoginScreen.returnOnSuccess].
+  final bool returnOnSuccess;
 
   @override
   ConsumerState<SmsVerificationScreen> createState() =>
@@ -60,7 +67,10 @@ class _SmsVerificationScreenState extends ConsumerState<SmsVerificationScreen> {
     }
 
     await Navigator.of(context).pushReplacement(
-      MaterialPageRoute<void>(builder: (_) => const SignUpSuccessScreen()),
+      MaterialPageRoute<void>(
+        builder:
+            (_) => SignUpSuccessScreen(returnOnSuccess: widget.returnOnSuccess),
+      ),
     );
   }
 

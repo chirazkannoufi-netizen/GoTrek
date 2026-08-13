@@ -4,10 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/app_routes.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../state/auth_controller.dart';
+import 'auth_gate.dart';
 
 /// Confirmation shown once an account has been created.
 class SignUpSuccessScreen extends ConsumerWidget {
-  const SignUpSuccessScreen({super.key});
+  const SignUpSuccessScreen({super.key, this.returnOnSuccess = false});
+
+  /// See [LoginScreen.returnOnSuccess].
+  final bool returnOnSuccess;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,8 +61,14 @@ class SignUpSuccessScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: AppSpacing.huge),
                   FilledButton(
-                    onPressed: () => AppRoutes.goHome(context),
-                    child: const Text('Start exploring'),
+                    onPressed:
+                        () =>
+                            returnOnSuccess
+                                ? AuthGate.finish(context)
+                                : AppRoutes.goHome(context),
+                    child: Text(
+                      returnOnSuccess ? 'Continue' : 'Start exploring',
+                    ),
                   ),
                 ],
               ),

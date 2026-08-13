@@ -8,16 +8,19 @@ import '../../data/models/user_account.dart';
 import '../../state/auth_controller.dart';
 import '../../state/bookings_controller.dart';
 import '../../state/favorites_controller.dart';
+import '../auth/auth_gate.dart';
 
+/// Profile tab.
+///
+/// Reachable without an account: guests get a sign-in card here rather than
+/// being blocked out of the rest of the app.
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ThemeData theme = Theme.of(context);
     final UserAccount? user = ref.watch(currentUserProvider);
-    final int savedCount = ref.watch(favoritesCountProvider);
-    final int upcoming = ref.watch(upcomingBookingsCountProvider);
+    final bool signedIn = user != null;
 
     return Scaffold(
       appBar: AppBar(
@@ -28,67 +31,42 @@ class ProfileScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: AppSpacing.huge),
         children: <Widget>[
           const SizedBox(height: AppSpacing.sm),
-          Center(
-            child: Column(
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 44,
-                  backgroundColor: theme.colorScheme.primaryContainer,
-                  child: Text(
-                    user?.initials ?? '?',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      color: theme.colorScheme.onPrimaryContainer,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Text(
-                  user?.fullName ?? 'Guest',
-                  style: theme.textTheme.titleLarge,
-                ),
-                if (user != null)
-                  Text(
-                    user.email,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          Padding(
-            padding: AppSpacing.pageHorizontal,
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: _StatCard(
-                    label: 'Saved places',
-                    value: '$savedCount',
-                    icon: Icons.favorite_border,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: _StatCard(
-                    label: 'Upcoming trips',
-                    value: '$upcoming',
-                    icon: Icons.luggage_outlined,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          if (signedIn) ...<Widget>[
+            _SignedInHeader(user: user),
+            const SizedBox(height: AppSpacing.xl),
+            const _Stats(),
+          ] else
+            const _GuestCard(),
           const SizedBox(height: AppSpacing.xl),
           _MenuTile(
             icon: Icons.confirmation_number_outlined,
             title: 'My bookings',
-            onTap: () => AppRoutes.openBookings(context),
+            onTap: () async {
+              if (!await ensureSignedIn(
+                context,
+                ref,
+                action: 'see your bookings',
+              )) {
+                return;
+              }
+              if (context.mounted) await AppRoutes.openBookings(context);
+            },
           ),
           _MenuTile(
             icon: Icons.person_outline,
             title: 'Personal information',
-            onTap: () => _showPersonalInfo(context, user),
+            onTap: () async {
+              if (!await ensureSignedIn(
+                context,
+                ref,
+                action: 'see your details',
+              )) {
+                return;
+              }
+              if (context.mounted) {
+                _showPersonalInfo(context, ref.read(currentUserProvider));
+              }
+            },
           ),
           _MenuTile(
             icon: Icons.payment_outlined,
@@ -105,31 +83,20 @@ class ProfileScreen extends ConsumerWidget {
             title: 'Support',
             onTap: () => showNotConnected(context, 'Support'),
           ),
-          const SizedBox(height: AppSpacing.lg),
-          Padding(
-            padding: AppSpacing.pageHorizontal,
-            child: OutlinedButton.icon(
-              onPressed: () => _confirmSignOut(context, ref),
-              icon: Icon(Icons.logout, color: theme.colorScheme.error),
-              label: Text(
-                'Log out',
-                style: TextStyle(color: theme.colorScheme.error),
-              ),
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: theme.colorScheme.error),
-              ),
+          if (signedIn) ...<Widget>[
+            const SizedBox(height: AppSpacing.lg),
+            Padding(
+              padding: AppSpacing.pageHorizontal,
+              child: _LogOutButton(onConfirmed: () => _signOut(context, ref)),
             ),
-          ),
+          ],
         ],
       ),
     );
   }
 
   void _showPersonalInfo(BuildContext context, UserAccount? user) {
-    if (user == null) {
-      showMessage(context, 'Sign in to see your details.');
-      return;
-    }
+    if (user == null) return;
 
     showModalBottomSheet<void>(
       context: context,
@@ -161,31 +128,188 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _confirmSignOut(BuildContext context, WidgetRef ref) async {
-    final bool? confirmed = await showDialog<bool>(
-      context: context,
-      builder:
-          (BuildContext context) => AlertDialog(
-            title: const Text('Log out?'),
-            content: const Text(
-              'Your saved places and bookings stay on this device.',
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('Cancel'),
+  /// Signing out returns to the home tab, not the login screen — the app
+  /// stays usable as a guest.
+  Future<void> _signOut(BuildContext context, WidgetRef ref) async {
+    await ref.read(authControllerProvider.notifier).signOut();
+    if (context.mounted) showMessage(context, 'You are signed out.');
+  }
+}
+
+class _SignedInHeader extends StatelessWidget {
+  const _SignedInHeader({required this.user});
+
+  final UserAccount user;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Center(
+      child: Column(
+        children: <Widget>[
+          CircleAvatar(
+            radius: 44,
+            backgroundColor: theme.colorScheme.primaryContainer,
+            child: Text(
+              user.initials,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: theme.colorScheme.onPrimaryContainer,
               ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Text(user.fullName, style: theme.textTheme.titleLarge),
+          Text(
+            user.email,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The signed-out state of the Profile tab.
+class _GuestCard extends ConsumerWidget {
+  const _GuestCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ThemeData theme = Theme.of(context);
+
+    return Padding(
+      padding: AppSpacing.pageHorizontal,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.xl),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 28,
+                    backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                    child: Icon(
+                      Icons.person_outline,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.lg),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          'You are browsing as a guest',
+                          style: theme.textTheme.titleSmall,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Sign in to save places and keep your bookings.',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.xl),
               FilledButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Log out'),
+                onPressed:
+                    () => ensureSignedIn(
+                      context,
+                      ref,
+                      action: 'use your account',
+                    ),
+                child: const Text('Log in or sign up'),
               ),
             ],
           ),
+        ),
+      ),
     );
+  }
+}
 
-    if (!(confirmed ?? false)) return;
-    await ref.read(authControllerProvider.notifier).signOut();
-    if (context.mounted) AppRoutes.goLogin(context);
+class _Stats extends ConsumerWidget {
+  const _Stats();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final int savedCount = ref.watch(favoritesCountProvider);
+    final int upcoming = ref.watch(upcomingBookingsCountProvider);
+
+    return Padding(
+      padding: AppSpacing.pageHorizontal,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: _StatCard(
+              label: 'Saved places',
+              value: '$savedCount',
+              icon: Icons.favorite_border,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: _StatCard(
+              label: 'Upcoming trips',
+              value: '$upcoming',
+              icon: Icons.luggage_outlined,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LogOutButton extends StatelessWidget {
+  const _LogOutButton({required this.onConfirmed});
+
+  final Future<void> Function() onConfirmed;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return OutlinedButton.icon(
+      onPressed: () async {
+        final bool? confirmed = await showDialog<bool>(
+          context: context,
+          builder:
+              (BuildContext context) => AlertDialog(
+                title: const Text('Log out?'),
+                content: const Text(
+                  'Your saved places and bookings stay on this device.',
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('Cancel'),
+                  ),
+                  FilledButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text('Log out'),
+                  ),
+                ],
+              ),
+        );
+        if (confirmed ?? false) await onConfirmed();
+      },
+      icon: Icon(Icons.logout, color: theme.colorScheme.error),
+      label: Text('Log out', style: TextStyle(color: theme.colorScheme.error)),
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: theme.colorScheme.error),
+      ),
+    );
   }
 }
 

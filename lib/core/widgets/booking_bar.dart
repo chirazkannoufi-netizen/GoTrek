@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/auth/auth_gate.dart';
 import '../theme/app_spacing.dart';
 import 'rating_pill.dart';
 
 /// Sticky total and primary action, shared by the trip, stay and experience
 /// detail screens so checkout always starts from the same place.
-class BookingBar extends StatelessWidget {
+///
+/// Booking belongs to an account, so the primary button routes through the
+/// sign-in gate before running [onPressed].
+class BookingBar extends ConsumerWidget {
   const BookingBar({
     super.key,
     required this.total,
@@ -19,8 +24,14 @@ class BookingBar extends StatelessWidget {
   final String actionLabel;
   final VoidCallback onPressed;
 
+  Future<void> _handlePressed(BuildContext context, WidgetRef ref) async {
+    if (!await ensureSignedIn(context, ref, action: 'book this')) return;
+    if (!context.mounted) return;
+    onPressed();
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
 
     return SafeArea(
@@ -53,7 +64,7 @@ class BookingBar extends StatelessWidget {
             ),
             const SizedBox(width: AppSpacing.lg),
             FilledButton(
-              onPressed: onPressed,
+              onPressed: () => _handlePressed(context, ref),
               style: FilledButton.styleFrom(minimumSize: const Size(150, 52)),
               child: Text(actionLabel),
             ),

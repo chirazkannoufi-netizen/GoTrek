@@ -4,6 +4,8 @@ import '../../../app/app_routes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/feedback.dart';
 import '../../../data/seed/seed_catalog.dart';
+import '../login_screen.dart';
+import '../sign_up_screen.dart';
 
 /// Shared chrome for the login and sign-up screens: brand header, the
 /// Log in / Sign up switch, the form, and the footer.
@@ -14,9 +16,15 @@ class AuthScaffold extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.form,
+    this.returnOnSuccess = false,
   });
 
   final bool isLogin;
+
+  /// True when this screen was opened by [AuthGate]; the Log in / Sign up
+  /// switch then pushes rather than replaces, so the gate's own route stays
+  /// on the stack for AuthGate.finish to unwind to.
+  final bool returnOnSuccess;
   final String title;
   final String subtitle;
   final Widget form;
@@ -53,7 +61,10 @@ class AuthScaffold extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xxxl),
-                  _AuthSwitch(isLogin: isLogin),
+                  _AuthSwitch(
+                    isLogin: isLogin,
+                    returnOnSuccess: returnOnSuccess,
+                  ),
                   const SizedBox(height: AppSpacing.xxxl),
                   Text(title, style: theme.textTheme.headlineSmall),
                   const SizedBox(height: AppSpacing.sm),
@@ -80,9 +91,20 @@ class AuthScaffold extends StatelessWidget {
 }
 
 class _AuthSwitch extends StatelessWidget {
-  const _AuthSwitch({required this.isLogin});
+  const _AuthSwitch({required this.isLogin, required this.returnOnSuccess});
 
   final bool isLogin;
+  final bool returnOnSuccess;
+
+  void _go(BuildContext context, Widget screen, String namedRoute) {
+    if (returnOnSuccess) {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute<bool>(builder: (_) => screen));
+    } else {
+      Navigator.of(context).pushReplacementNamed(namedRoute);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,18 +125,22 @@ class _AuthSwitch extends StatelessWidget {
             onTap:
                 isLogin
                     ? null
-                    : () => Navigator.of(
+                    : () => _go(
                       context,
-                    ).pushReplacementNamed(AppRoutes.login),
+                      const LoginScreen(returnOnSuccess: true),
+                      AppRoutes.login,
+                    ),
           ),
           _SwitchTab(
             label: 'Sign up',
             selected: !isLogin,
             onTap:
                 isLogin
-                    ? () => Navigator.of(
+                    ? () => _go(
                       context,
-                    ).pushReplacementNamed(AppRoutes.signUp)
+                      const SignUpScreen(returnOnSuccess: true),
+                      AppRoutes.signUp,
+                    )
                     : null,
           ),
         ],

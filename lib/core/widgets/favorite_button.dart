@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/models/catalog_item.dart';
+import '../../features/auth/auth_gate.dart';
 import '../../state/favorites_controller.dart';
 
 /// Heart toggle. Writes through the favourites controller, so every card
@@ -21,6 +22,10 @@ class FavoriteButton extends ConsumerWidget {
   final double size;
 
   Future<void> _toggle(BuildContext context, WidgetRef ref) async {
+    // Saving belongs to an account, so guests are prompted first.
+    if (!await ensureSignedIn(context, ref, action: 'save places')) return;
+    if (!context.mounted) return;
+
     final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
     final bool added = await ref
         .read(favoritesControllerProvider.notifier)

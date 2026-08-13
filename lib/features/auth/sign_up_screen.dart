@@ -9,7 +9,11 @@ import 'sms_verification_screen.dart';
 import 'widgets/auth_scaffold.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
-  const SignUpScreen({super.key});
+  const SignUpScreen({super.key, this.returnOnSuccess = false});
+
+  /// See [LoginScreen.returnOnSuccess].
+
+  final bool returnOnSuccess;
 
   @override
   ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
@@ -48,7 +52,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     setState(() => _isSubmitting = false);
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => SmsVerificationScreen(pending: pending),
+        builder:
+            (_) => SmsVerificationScreen(
+              pending: pending,
+              returnOnSuccess: widget.returnOnSuccess,
+            ),
       ),
     );
   }
@@ -59,6 +67,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
     return AuthScaffold(
       isLogin: false,
+      returnOnSuccess: widget.returnOnSuccess,
       title: 'Create your account',
       subtitle: 'It takes a minute. We will send a code to confirm.',
       form: Form(

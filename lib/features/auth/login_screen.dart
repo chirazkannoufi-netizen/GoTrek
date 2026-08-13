@@ -7,10 +7,17 @@ import '../../core/utils/validators.dart';
 import '../../core/widgets/feedback.dart';
 import '../../data/models/user_account.dart';
 import '../../state/auth_controller.dart';
+import 'auth_gate.dart';
 import 'widgets/auth_scaffold.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.returnOnSuccess = false});
+
+  /// Set when opened by [AuthGate]: on success the whole auth flow closes and
+  /// hands control back to the action the user was trying to take, instead of
+  /// resetting them to the home screen.
+
+  final bool returnOnSuccess;
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -49,12 +56,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (next.hasError) {
         showMessage(context, next.error.toString());
       } else if (next.value != null) {
-        AppRoutes.goHome(context);
+        if (widget.returnOnSuccess) {
+          AuthGate.finish(context);
+        } else {
+          AppRoutes.goHome(context);
+        }
       }
     });
 
     return AuthScaffold(
       isLogin: true,
+      returnOnSuccess: widget.returnOnSuccess,
       title: 'Welcome back',
       subtitle: 'Sign in to pick up where you left off.',
       form: Form(
