@@ -18,9 +18,11 @@ void main() {
       ProviderScope(overrides: testOverrides(), child: const GoTrekApp()),
     );
     await tester.pump();
-    expect(find.text('Every trip starts here'), findsOneWidget);
+    expect(find.text("Let's make our life so life"), findsOneWidget);
 
-    await tester.drag(find.byType(GestureDetector).last, const Offset(400, 0));
+    // The aeroplane knob is the drag target; completing it plays a short
+    // take-off before navigating, which pumpAndSettle rides out.
+    await tester.drag(find.byIcon(Icons.flight), const Offset(400, 0));
     await tester.pumpAndSettle();
   }
 

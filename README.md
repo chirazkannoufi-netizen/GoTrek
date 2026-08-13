@@ -21,6 +21,7 @@ This was a 4-person team project. I contributed to the requirements analysis and
 | State management | Riverpod (`flutter_riverpod`) |
 | Local persistence | `shared_preferences` |
 | Formatting | `intl` |
+| Display type | Playfair Display Italic, bundled (SIL OFL 1.1) |
 | Database *(schema only, no server yet)* | PostgreSQL |
 | Backend *(specified, not implemented)* | Node.js |
 
@@ -55,7 +56,7 @@ lib/
 
 Everything listed here works in the app as shipped.
 
-- **Onboarding** — swipe-to-start welcome screen over a softened backdrop.
+- **Onboarding** — welcome screen with a slide-to-start control: an aeroplane knob that pulses while idle, lifts its nose as you drag, and takes off when released past the threshold.
 - **Guest access** — the whole app is browsable without an account. Signing in is only asked for when an action belongs to an account (saving a place, booking, viewing your bookings), and the action resumes automatically once you are in.
 - **Authentication** — login and sign-up with full form validation, password visibility toggle, and a four-digit confirmation step. The session persists across restarts.
 - **Home = your city** — stays, landmarks and activities in the city you are in, with a search box that filters within that city. The location control opens a picker; the Flights shortcut opens the departures board.
@@ -75,7 +76,6 @@ This repository is the **frontend implementation**. To be precise about what is 
 
 - **No backend server.** `database/schema.sql` defines the intended data model, but nothing serves it.
 - **Only one city has local content.** New York is populated; the location picker lists other cities but marks them as unavailable rather than pretending otherwise.
-- **Some destinations have no photography.** The cities added to Explore have no licensed images in `assets/`, so their cards draw a generated gradient cover keyed off the city name instead of a stock photo.
 - **Data is seeded locally.** `lib/data/seed/seed_catalog.dart` holds the catalogue. The repositories return it behind a small artificial delay so the loading states are genuinely exercised. Trip dates are generated relative to today, so nothing shows as already departed.
 - **Authentication is local.** Any well-formed email and password opens a session; there is no credential store and no OAuth2/JWT yet. The sign-up confirmation code is generated on the device and displayed on screen, because there is no SMS gateway — the check itself is real, and a wrong code is rejected.
 - **Payment is not processed.** Choosing a card and confirming stores a booking locally; no payment provider is contacted. No card numbers are captured or stored anywhere.

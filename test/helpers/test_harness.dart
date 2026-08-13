@@ -33,10 +33,13 @@ List<Override> testOverrides() {
 
 /// Pumps [child] with the real theme and a catalogue that resolves without
 /// the artificial delay, so tests do not have to wait on it.
+/// Set [settle] to false for screens that animate continuously — the welcome
+/// screen's idle loop never settles.
 Future<void> pumpAppWidget(
   WidgetTester tester,
   Widget child, {
   List<Override> overrides = const <Override>[],
+  bool settle = true,
 }) async {
   SharedPreferences.setMockInitialValues(<String, Object>{});
 
@@ -51,5 +54,9 @@ Future<void> pumpAppWidget(
       child: MaterialApp(theme: AppTheme.light, home: child),
     ),
   );
-  await tester.pumpAndSettle();
+  if (settle) {
+    await tester.pumpAndSettle();
+  } else {
+    await tester.pump();
+  }
 }
