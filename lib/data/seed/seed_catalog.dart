@@ -111,7 +111,7 @@ abstract final class SeedCatalog {
         id: 'london',
         city: 'London',
         country: 'United Kingdom',
-        imageAsset: '',
+        imageAsset: 'assets/images/london_explore.jpg',
         distanceKm: 5570,
         rating: 4.7,
         summary:
@@ -137,7 +137,7 @@ abstract final class SeedCatalog {
         id: 'bangkok',
         city: 'Bangkok',
         country: 'Thailand',
-        imageAsset: '',
+        imageAsset: 'assets/images/bangkok_explore.jpg',
         distanceKm: 13930,
         rating: 4.7,
         summary:
@@ -163,7 +163,7 @@ abstract final class SeedCatalog {
         id: 'dubai',
         city: 'Dubai',
         country: 'United Arab Emirates',
-        imageAsset: '',
+        imageAsset: 'assets/images/dubai_explore.jpg',
         distanceKm: 11000,
         rating: 4.6,
         summary:
@@ -189,7 +189,7 @@ abstract final class SeedCatalog {
         id: 'istanbul',
         city: 'Istanbul',
         country: 'Türkiye',
-        imageAsset: '',
+        imageAsset: 'assets/images/istanbul_explore.jpg',
         distanceKm: 8060,
         rating: 4.7,
         summary:
@@ -215,7 +215,7 @@ abstract final class SeedCatalog {
         id: 'rome',
         city: 'Rome',
         country: 'Italy',
-        imageAsset: '',
+        imageAsset: 'assets/images/rome_explore.jpg',
         distanceKm: 6888,
         rating: 4.8,
         summary:
@@ -241,7 +241,7 @@ abstract final class SeedCatalog {
         id: 'barcelona',
         city: 'Barcelona',
         country: 'Spain',
-        imageAsset: '',
+        imageAsset: 'assets/images/barcelona_explore.jpg',
         distanceKm: 6150,
         rating: 4.7,
         summary:

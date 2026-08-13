@@ -31,4 +31,16 @@ flutter:
   uses-material-design: true
 
   assets:
+    # Registers every file in the directory, including the destination
+    # photographs (london_explore.jpg, rome_explore.jpg, istanbul_explore.jpg,
+    # dubai_explore.jpg, bangkok_explore.jpg, barcelona_explore.jpg).
     - assets/images/
+
+  fonts:
+    # Used only for the welcome tagline. Bundled rather than fetched at
+    # runtime so it renders identically offline. SIL OFL 1.1 — licence in
+    # assets/fonts/OFL.txt.
+    - family: PlayfairDisplay
+      fonts:
+        - asset: assets/fonts/PlayfairDisplay-Italic.ttf
+          style: italic
