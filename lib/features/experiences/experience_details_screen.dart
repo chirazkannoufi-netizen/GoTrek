@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/app_routes.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/app_image.dart';
 import '../../core/widgets/booking_bar.dart';
@@ -207,7 +208,7 @@ class _Detail extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Icon(icon, size: 20, color: theme.colorScheme.primary),
+        Icon(icon, size: AppTheme.iconInline, color: theme.colorScheme.primary),
         const SizedBox(height: AppSpacing.xs),
         Text(
           label,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/city_cover.dart';
 import '../../core/widgets/state_views.dart';
@@ -46,9 +47,9 @@ class BookingsScreen extends ConsumerWidget {
             ),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 560,
-              mainAxisExtent: 168,
-              crossAxisSpacing: AppSpacing.md,
-              mainAxisSpacing: AppSpacing.md,
+              mainAxisExtent: 172,
+              crossAxisSpacing: AppSpacing.lg,
+              mainAxisSpacing: AppSpacing.lg,
             ),
             itemCount: results.length,
             itemBuilder:
@@ -103,7 +104,7 @@ class _BookingCard extends ConsumerWidget {
                         children: <Widget>[
                           Icon(
                             booking.kind.icon,
-                            size: 14,
+                            size: AppTheme.iconCompact,
                             color: theme.colorScheme.primary,
                           ),
                           const SizedBox(width: AppSpacing.xs),

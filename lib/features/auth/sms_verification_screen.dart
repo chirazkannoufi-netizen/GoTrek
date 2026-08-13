@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/widgets/feedback.dart';
 import '../../data/models/user_account.dart';
 import '../../data/repositories/auth_repository.dart';
@@ -323,7 +324,10 @@ class _KeypadKey extends StatelessWidget {
           child: Center(
             child:
                 isBackspace
-                    ? const Icon(Icons.backspace_outlined, size: 22)
+                    ? const Icon(
+                      Icons.backspace_outlined,
+                      size: AppTheme.iconAction,
+                    )
                     : Text(value, style: theme.textTheme.headlineSmall),
           ),
         ),

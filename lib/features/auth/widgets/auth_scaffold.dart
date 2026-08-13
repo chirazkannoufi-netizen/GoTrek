@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app/app_routes.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/feedback.dart';
 import '../../../data/seed/seed_catalog.dart';
 import '../login_screen.dart';
@@ -251,7 +252,11 @@ class _SocialButton extends StatelessWidget {
           fixedSize: const Size(64, 52),
           padding: EdgeInsets.zero,
         ),
-        child: Icon(icon, size: 26, color: theme.colorScheme.onSurface),
+        child: Icon(
+          icon,
+          size: AppTheme.iconService,
+          color: theme.colorScheme.onSurface,
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/app_routes.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/app_search_field.dart';
 import '../../core/widgets/rating_pill.dart';
@@ -141,7 +142,7 @@ class _FlightCard extends StatelessWidget {
                   children: <Widget>[
                     Icon(
                       Icons.flight_takeoff,
-                      size: 16,
+                      size: AppTheme.iconCompact,
                       color: theme.colorScheme.primary,
                     ),
                     const SizedBox(width: AppSpacing.xs),
@@ -194,7 +195,7 @@ class _FlightCard extends StatelessWidget {
                               ),
                               Icon(
                                 Icons.flight,
-                                size: 16,
+                                size: AppTheme.iconCompact,
                                 color: theme.colorScheme.primary,
                               ),
                               Expanded(

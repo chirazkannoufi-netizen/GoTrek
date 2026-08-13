@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/app_routes.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_search_field.dart';
 import '../../core/widgets/cards/hotel_card.dart';
 import '../../core/widgets/state_views.dart';
@@ -48,7 +49,7 @@ class StaysScreen extends ConsumerWidget {
               children: <Widget>[
                 Icon(
                   Icons.sort,
-                  size: 20,
+                  size: AppTheme.iconInline,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: AppSpacing.sm),
@@ -103,16 +104,16 @@ class StaysScreen extends ConsumerWidget {
                   child: GridView.builder(
                     padding: const EdgeInsets.fromLTRB(
                       AppSpacing.lg,
-                      AppSpacing.sm,
+                      AppSpacing.md,
                       AppSpacing.lg,
                       AppSpacing.huge,
                     ),
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 560,
-                          mainAxisExtent: 150,
-                          crossAxisSpacing: AppSpacing.md,
-                          mainAxisSpacing: AppSpacing.md,
+                          mainAxisExtent: HotelCard.height,
+                          crossAxisSpacing: AppSpacing.lg,
+                          mainAxisSpacing: AppSpacing.lg,
                         ),
                     itemCount: results.length,
                     itemBuilder: (BuildContext context, int index) {

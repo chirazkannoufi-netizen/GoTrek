@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/app_routes.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_search_field.dart';
 import '../../core/widgets/cards/catalog_item_card.dart';
 import '../../core/widgets/cards/hotel_card.dart';
@@ -94,7 +95,10 @@ class _HomeAppBar extends ConsumerWidget {
                 ),
                 const SizedBox(width: AppSpacing.xs),
                 Text(city.label, style: theme.textTheme.titleSmall),
-                const Icon(Icons.keyboard_arrow_down, size: 20),
+                const Icon(
+                  Icons.keyboard_arrow_down,
+                  size: AppTheme.iconInline,
+                ),
               ],
             ),
           ),
@@ -288,7 +292,7 @@ class _ServicesRow extends ConsumerWidget {
                       children: <Widget>[
                         Icon(
                           service.icon,
-                          size: 28,
+                          size: AppTheme.iconService,
                           color: theme.colorScheme.primary,
                         ),
                         const SizedBox(height: AppSpacing.sm),
@@ -440,7 +444,7 @@ class _StaysPreview extends ConsumerWidget {
                       onTap: () => AppRoutes.openHotel(context, hotel),
                     ),
                     if (hotel != preview.last)
-                      const SizedBox(height: AppSpacing.md),
+                      const SizedBox(height: AppSpacing.lg),
                   ],
                 ],
               ),

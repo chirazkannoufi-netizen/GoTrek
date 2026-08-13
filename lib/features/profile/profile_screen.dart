@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/app_routes.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/widgets/feedback.dart';
 import '../../data/models/user_account.dart';
 import '../../state/auth_controller.dart';
@@ -334,7 +335,11 @@ class _StatCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(icon, color: theme.colorScheme.primary, size: 22),
+            Icon(
+              icon,
+              color: theme.colorScheme.primary,
+              size: AppTheme.iconAction,
+            ),
             const SizedBox(height: AppSpacing.sm),
             Text(value, style: theme.textTheme.headlineSmall),
             Text(

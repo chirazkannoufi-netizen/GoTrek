@@ -347,7 +347,7 @@ class _StaysForDestination extends ConsumerWidget {
                     hotel: hotel,
                     onTap: () => AppRoutes.openHotel(context, hotel),
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.lg),
                 ],
               ],
             );

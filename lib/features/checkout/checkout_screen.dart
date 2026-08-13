@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_spacing.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/city_cover.dart';
 import '../../core/widgets/feedback.dart';
@@ -198,7 +199,7 @@ class _SummaryCard extends StatelessWidget {
                     children: <Widget>[
                       Icon(
                         draft.kind.icon,
-                        size: 16,
+                        size: AppTheme.iconCompact,
                         color: theme.colorScheme.primary,
                       ),
                       const SizedBox(width: AppSpacing.xs),

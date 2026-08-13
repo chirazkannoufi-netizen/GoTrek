@@ -67,9 +67,9 @@ class FavoritesScreen extends ConsumerWidget {
             ),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 560,
-              mainAxisExtent: 132,
-              crossAxisSpacing: AppSpacing.md,
-              mainAxisSpacing: AppSpacing.md,
+              mainAxisExtent: 136,
+              crossAxisSpacing: AppSpacing.lg,
+              mainAxisSpacing: AppSpacing.lg,
             ),
             itemCount: items.length,
             itemBuilder: (BuildContext context, int index) {
