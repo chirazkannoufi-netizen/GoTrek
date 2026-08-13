@@ -1,140 +1,174 @@
-# GoTrek — Tourism Services Mobile App
+# GoTrek
 
-Final-year group project (Licence, Systèmes Informatiques) — Université Ferhat Abbas Sétif 1, 2025.
+**A tourism booking app built with Flutter and Riverpod — discover a city, book a stay, plan the trip.**
 
-GoTrek centralizes tourism services in one app: discovering destinations, booking flights and stays, and joining guided experiences. Full specifications are in [`docs/cahier_des_charges.pdf`](docs/cahier_des_charges.pdf).
+### Demo
 
-## My Role
+<video src="docs/screenshots/demo.mp4" controls muted playsinline width="320"></video>
 
-**UI/UX Design (Figma) & Frontend Development (Flutter)** — Kannoufi Chiraz Lina
+▶︎ **[Watch the 40-second demo](docs/screenshots/demo.mp4)** — a full pass through the app: welcome, home, search, explore, stays and booking.
 
-I designed the app's screens in Figma and implemented the Flutter frontend: onboarding, authentication, destination browsing, flight and hotel booking, checkout, favourites and profile.
+---
 
-This was a 4-person team project. I contributed to the requirements analysis and UML modelling as a team; backend architecture and the original database schema were led by other team members.
+## Overview
 
-## Tech Stack
+GoTrek centralises the things a traveller needs into one app. The home screen is about **where you are** — the hotels, landmarks and activities in your current city, searchable in place. The Explore tab is about **where you might go**: the world's most-visited destinations, each with a return trip you can price and book. A separate departures board lists the flights leaving your airport today. Everything is browsable without an account; signing in is only asked for when an action genuinely belongs to one, such as saving a place or completing a booking.
 
-| Layer | Technology |
-|---|---|
-| Design | Figma |
-| Frontend | Flutter 3.29 / Dart 3.7 |
-| State management | Riverpod (`flutter_riverpod`) |
-| Local persistence | `shared_preferences` |
-| Formatting | `intl` |
-| Display type | Playfair Display Italic, bundled (SIL OFL 1.1) |
-| Database *(schema only, no server yet)* | PostgreSQL |
-| Backend *(specified, not implemented)* | Node.js |
+The project began as a final-year group project for the *Licence en Systèmes Informatiques* at **Université Ferhat Abbas Sétif 1 (2025)**, built by a team of four. The original submission covered the requirements analysis, UML modelling, a PostgreSQL schema and a first Flutter prototype of the screens.
 
-## Architecture
+It was later refactored into the portfolio-quality prototype in this repository: the flat screen files became a layered architecture, the hardcoded lists inside widgets became typed models behind a repository layer, Riverpod replaced ad-hoc `setState`, and a test suite was added. The app is **frontend-complete and backend-pending** — the data comes from a local seeded catalogue designed to be swapped for a real API without touching the UI. The [Current state](#current-state) section is explicit about what is and is not real.
 
-The app is organised in three layers. Screens never touch data sources directly — they read from providers, which read from repositories.
+---
 
-```
-lib/
-├── main.dart                  # runApp(ProviderScope(GoTrekApp()))
-├── app/
-│   ├── gotrek_app.dart        # MaterialApp, light + dark themes
-│   ├── app_routes.dart        # named routes + typed navigation helpers
-│   └── app_shell.dart         # bottom-nav shell (IndexedStack)
-├── core/
-│   ├── theme/                 # colour tokens, 4pt spacing scale, ThemeData
-│   ├── utils/                 # formatters, form validators
-│   └── widgets/               # shared UI: cards, states, search, rating, …
-├── data/
-│   ├── models/                # Destination, Hotel, Experience, Booking, …
-│   ├── seed/                  # the in-app catalogue, in one place
-│   └── repositories/          # catalog, auth, favourites, bookings
-├── state/                     # Riverpod providers and controllers
-└── features/                  # one folder per screen area
-    ├── onboarding/  auth/  home/  explore/  destination/
-    └── stays/  experiences/  attractions/  checkout/  favorites/  profile/
-```
+## Screenshots
 
-**Data flow:** `SeedCatalog` → `CatalogRepository` → `FutureProvider` → screen. Replacing the seed data with an HTTP client is a change to the repositories only; nothing in `features/` knows where the data came from.
+| | | |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/01_welcome.png" width="240" alt="Welcome screen"> | <img src="docs/screenshots/02_login.png" width="240" alt="Log in screen"> | <img src="docs/screenshots/03_signup.png" width="240" alt="Sign up screen"> |
+| **Welcome** — brand tagline over a softened backdrop, with a slide-to-start control whose aeroplane knob pulses while idle and takes off on release. | **Log in** — segmented log in / sign up switch, validated email and password fields with a visibility toggle. | **Sign up** — full name, email or phone, password rules enforced inline, and a terms checkbox that gates the submit button. |
+| <img src="docs/screenshots/04_home.png" width="240" alt="Home screen"> | <img src="docs/screenshots/05_explore.png" width="240" alt="Explore screen"> | <img src="docs/screenshots/06_stays.png" width="240" alt="Stays screen"> |
+| **Home** — your current city: a location picker, in-city search, service shortcuts, and rails of landmarks and hotels. | **Explore** — trips away from your city: ten world destinations with category filters, a hero card and return fares. | **Stays** — hotel list with live search and a working sort by price or rating, showing ratings, review counts and nightly rates. |
+| <img src="docs/screenshots/07_profile.png" width="240" alt="Profile screen"> | | |
+| **Profile** — signed-in account with saved-place and upcoming-trip counts, bookings, and settings entries. | | |
+
+---
 
 ## Features
 
-Everything listed here works in the app as shipped.
+Everything listed here works in the app as it stands.
 
-- **Onboarding** — welcome screen with a slide-to-start control: an aeroplane knob that pulses while idle, lifts its nose as you drag, and takes off when released past the threshold.
-- **Guest access** — the whole app is browsable without an account. Signing in is only asked for when an action belongs to an account (saving a place, booking, viewing your bookings), and the action resumes automatically once you are in.
-- **Authentication** — login and sign-up with full form validation, password visibility toggle, and a four-digit confirmation step. The session persists across restarts.
-- **Home = your city** — stays, landmarks and activities in the city you are in, with a search box that filters within that city. The location control opens a picker; the Flights shortcut opens the departures board.
-- **Explore = trips elsewhere** — the world's most-visited destinations, searchable and filterable by category, each with a return trip you can book. Your current city is deliberately excluded.
-- **Flights** — today's departures from your city with times, durations, fares and seats left.
-- **Trip details** — the real outbound and return legs with times, airport codes and durations, a traveller stepper, and the stays available in that city.
-- **Stays** — search and a working sort (price ascending/descending, top rated); detail screens with facilities, an expandable description, a date-range picker and a room stepper.
-- **Experiences** — guided tours with duration, next date and a guest stepper.
-- **Checkout** — itemised price breakdown with a service fee, payment-method selection, and a booking that is actually stored.
-- **Bookings** — every confirmed booking with its reference and status, and the ability to cancel one.
-- **Favourites** — save destinations, stays, experiences and attractions; persisted on the device and reflected in a badge on the nav bar.
-- **Throughout** — loading, empty and error states; a light default theme (a dark theme is built but not wired to the device setting); layouts that adapt from phone to desktop widths.
+- **Guest browsing** — the whole app is usable without an account. A sign-in prompt appears only for account actions (saving, booking, viewing your bookings), and the interrupted action resumes automatically once you are signed in.
+- **Home, scoped to your city** — landmarks, hotels and activities for the selected city, with a search box that filters within that city rather than redirecting elsewhere, and a location picker in the app bar.
+- **Explore, scoped to everywhere else** — ten of the world's most-visited destinations with search, category filters, distances and return fares. Your current city is deliberately excluded so the two tabs never mirror each other.
+- **Stays** — searchable hotel list with a working sort (price ascending or descending, top rated); detail pages with facilities, an expandable description, a date-range picker and a room stepper.
+- **Flights** — a departures board of today's flights from your airport, with times, durations, fares, seats remaining, and a traveller stepper before checkout.
+- **Experiences** — guided tours and activities with duration, next available date and a guest stepper.
+- **Booking flow** — an itemised price breakdown with a service fee, payment-method selection, and a confirmation screen with a generated booking reference. Confirmed bookings are listed under the profile and can be cancelled.
+- **Favourites** — save destinations, stays, experiences and landmarks; persisted on the device and surfaced as a badge on the navigation bar.
+- **Throughout** — loading, empty and error states on every asynchronous view; a light Material 3 theme; layouts that adapt from phone to desktop widths.
 
-## Current State & Known Limitations
+---
 
-This repository is the **frontend implementation**. To be precise about what is and is not real:
+## Tech stack
 
-- **No backend server.** `database/schema.sql` defines the intended data model, but nothing serves it.
-- **Only one city has local content.** New York is populated; the location picker lists other cities but marks them as unavailable rather than pretending otherwise.
-- **Data is seeded locally.** `lib/data/seed/seed_catalog.dart` holds the catalogue. The repositories return it behind a small artificial delay so the loading states are genuinely exercised. Trip dates are generated relative to today, so nothing shows as already departed.
-- **Authentication is local.** Any well-formed email and password opens a session; there is no credential store and no OAuth2/JWT yet. The sign-up confirmation code is generated on the device and displayed on screen, because there is no SMS gateway — the check itself is real, and a wrong code is rejected.
-- **Payment is not processed.** Choosing a card and confirming stores a booking locally; no payment provider is contacted. No card numbers are captured or stored anywhere.
-- **Some controls are deliberately inert.** Social sign-in, notifications, support and a few profile entries are part of the design but have nothing behind them; they say so when tapped rather than doing nothing.
+| Layer | Technology | Status |
+|---|---|---|
+| Framework | Flutter 3.29 | Implemented |
+| Language | Dart 3.7 | Implemented |
+| State management | Riverpod (`flutter_riverpod`) | Implemented |
+| Local persistence | `shared_preferences` | Implemented |
+| Design system | Material 3 | Implemented |
+| Formatting | `intl` | Implemented |
+| Design | Figma | Implemented |
+| Backend API | Node.js | Specified, not implemented |
+| Database | PostgreSQL | Schema written, no live instance |
+| Hosting | Firebase | Specified, not implemented |
 
-Favourites, bookings and the session are persisted with `shared_preferences`, so they survive a restart on the device.
+The Node.js backend, PostgreSQL database and Firebase hosting are specified in the [cahier des charges](docs/cahier_des_charges.pdf) but have not been built. The app currently reads from a local mock catalogue behind a repository layer, which exists precisely so it can be replaced by a real API client without changes to the UI.
 
-## What's Needed to Make It Fully Functional
+---
 
-1. **Backend API** (Node.js, as specified) over the entities in `database/schema.sql`.
-2. **PostgreSQL instance** created from that schema and connected to the API.
-3. **HTTP client** (`http` or `dio`) behind the existing repository interfaces — the screens do not change.
-4. **Real authentication** (JWT) replacing `AuthRepository`, and an SMS provider for the confirmation step.
-5. **A payment provider** for checkout.
-6. **Server-side favourites and bookings**, so they follow the account rather than the device.
+## Architecture
 
-## Database
+The code is organised in layers, and screens never reach a data source directly. `app/` holds the `MaterialApp`, the route table and the bottom-navigation shell. `core/` holds cross-cutting concerns — the theme tokens, formatters, validators and the shared widget library. `data/` holds the typed models, the seeded catalogue and the repositories that expose it. `state/` holds the Riverpod providers and controllers that mediate between the two. `features/` holds one folder per screen area, each consuming providers rather than repositories. The data path is `SeedCatalog → CatalogRepository → provider → screen`, so introducing an HTTP client is a change confined to the repository layer.
 
-[`database/schema.sql`](database/schema.sql) — PostgreSQL.
+---
 
-The original model was designed by a teammate from the class diagram in the cahier des charges. I revised it so it covers what the app actually handles: destinations, categories, attractions, flights and trip offers, hotel amenities, favourites, payment methods, payments and reviews. Along the way the three identical service-provider tables were merged into one, `circuit.destinations TEXT[]` became a join table, statuses became `ENUM` types, and ratings are derived from reviews through a view rather than stored on the row. Header comments in the file record each change.
+## Getting started
 
-The schema has not been executed against a live PostgreSQL instance.
+**Prerequisites** — Flutter SDK 3.29 or newer (Dart 3.7+). Verify your install with `flutter doctor`.
 
-## Running the App
+Clone the repository and fetch dependencies:
 
 ```bash
 flutter pub get
 ```
 
+Run the app on a connected device, emulator or desktop target:
+
 ```bash
 flutter run
 ```
 
-Quality gates — both are clean:
-
-```bash
-flutter analyze
-```
+Run the test suite:
 
 ```bash
 flutter test
 ```
 
-`analysis_options.yaml` promotes unused imports, dead code and deprecated API use to **errors**, so `flutter analyze` failing means the build is broken, not merely untidy.
+Run the static analyzer:
 
-## Tests
+```bash
+flutter analyze
+```
 
-61 tests covering:
+Both gates are clean. `analysis_options.yaml` promotes unused imports, dead code and deprecated API use from warnings to **errors**, so a failing analyzer run means the build is genuinely broken rather than merely untidy.
 
-- **Unit** — validators, display formatters, model arithmetic and JSON round-trips.
-- **Controllers** — favourites and bookings including their persistence, and the catalogue search/filter/sort logic.
-- **Widget** — the explore, stays and favourites screens.
-- **End to end** — `test/widget/app_flow_test.dart` boots the real app at a phone viewport and covers guest browsing, the sign-in gate on saving and booking, the location picker, home search, the flights board, and welcome → explore → trip detail → checkout → confirmation.
+---
+
+## Project structure
+
+```
+GoTrek/
+├── lib/          Application source: app shell, core utilities and theme,
+│                 data layer, Riverpod state, and one folder per feature.
+├── assets/       Destination and hotel photography, the logo, and the
+│                 bundled display typeface used by the welcome tagline.
+├── docs/         Requirements document, UML diagrams, screenshots and demo.
+├── database/     PostgreSQL schema for the intended backend.
+└── test/         Unit, controller, widget and end-to-end widget tests.
+```
+
+---
 
 ## Documentation
 
-- [Cahier des charges (full spec)](docs/cahier_des_charges.pdf) — **the maintained version**: cover, table of contents, numbered sections, each UML diagram on its own page (the class diagram landscape), plus an annexe recording the current state of the app. `docs/cahier_des_charges.tex` is the original LaTeX source and is no longer kept in sync with it.
-- [Use case diagram](docs/diagrams/use_case_diagram.png)
-- [Class diagram](docs/diagrams/class_diagram.png)
-- [Sequence diagram — Tourist flow](docs/diagrams/sequence_diagram_tourist.png)
-- [Sequence diagram — Service providers flow](docs/diagrams/sequence_diagram_providers.png)
+- [Cahier des charges (full specification)](docs/cahier_des_charges.pdf) — **the maintained version**: cover, table of contents, numbered sections, each UML diagram on its own page, and an annexe recording the current state of the app. `docs/cahier_des_charges.tex` is the original LaTeX source and is no longer kept in sync with it.
+- [Use case diagram](docs/diagrams/use_case_diagram.png) — interactions between the four actors and the system.
+- [Class diagram](docs/diagrams/class_diagram.png) — system entities and their relationships.
+- [Sequence diagram — tourist flow](docs/diagrams/sequence_diagram_tourist.png) — search, availability check and booking confirmation.
+- [Sequence diagram — service providers flow](docs/diagrams/sequence_diagram_providers.png) — provider sign-in and offer publication.
+
+---
+
+## Current state
+
+To be precise about what is and is not real:
+
+- **No backend server.** `database/schema.sql` defines the intended data model, but nothing serves it.
+- **Data is seeded locally.** `lib/data/seed/seed_catalog.dart` holds the catalogue. Repositories return it behind a small artificial delay so the loading states are genuinely exercised, and trip dates are generated relative to today so nothing is advertised in the past.
+- **One city has local content.** New York is populated; the location picker lists other cities but marks them unavailable rather than pretending otherwise.
+- **Authentication is local.** Any well-formed email and password opens a session; there is no credential store and no OAuth2 or JWT yet. The sign-up confirmation code is generated on the device and shown on screen because there is no SMS gateway — the check itself is real, and a wrong code is rejected.
+- **Payment is not processed.** Selecting a card and confirming stores a booking locally; no payment provider is contacted, and no card numbers are captured or stored anywhere.
+- **Some controls are deliberately inert.** Social sign-in, notifications and support are part of the design but have nothing behind them; they say so when tapped rather than doing nothing.
+
+Favourites, bookings and the session persist through `shared_preferences`, so they survive a restart on the device.
+
+---
+
+## Roadmap
+
+What would be required to take this from prototype to production:
+
+1. **Node.js REST API** over the entities in `database/schema.sql`.
+2. **PostgreSQL instance** created from that schema and connected to the API.
+3. **Real authentication** — JWT issuance and refresh, replacing the local session, plus a credential store.
+4. **SMS gateway** so the sign-up confirmation code is actually delivered.
+5. **Payment gateway** for checkout.
+6. **Multi-city content** so the location picker is backed by real data beyond New York.
+7. **Server-side favourites and bookings**, so they follow the account rather than the device.
+
+---
+
+## Credits
+
+Final-year group project for the *Licence en Systèmes Informatiques*, **Université Ferhat Abbas Sétif 1**, 2025.
+
+Built by a team of four:
+
+- Kannoufi Chiraz Lina
+- Benarab Dhiaa El Din
+- Bouzidi Hichem
+- Rouag Younes
+
+Produced for academic assessment and retained as a portfolio piece. The bundled Playfair Display typeface is used under the [SIL Open Font License 1.1](assets/fonts/OFL.txt).
