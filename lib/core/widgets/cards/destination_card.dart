@@ -4,6 +4,7 @@ import '../../../data/models/destination.dart';
 import '../../theme/app_spacing.dart';
 import '../../utils/formatters.dart';
 import '../app_image.dart';
+import '../city_cover.dart';
 import '../favorite_button.dart';
 import '../rating_pill.dart';
 
@@ -31,7 +32,11 @@ class DestinationHeroCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            AppImage(destination.imageAsset),
+            CityCover(
+              imageAsset: destination.imageAsset,
+              title: destination.city,
+              height: height,
+            ),
             const ImageScrim(),
             // Below the content, so the "View trip" button and the save
             // button receive their own taps instead of this overlay
@@ -131,8 +136,9 @@ class DestinationListCard extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpacing.md),
           child: Row(
             children: <Widget>[
-              AppImage(
-                destination.imageAsset,
+              CityCover(
+                imageAsset: destination.imageAsset,
+                title: destination.city,
                 width: 84,
                 height: 84,
                 borderRadius: AppRadius.allMd,

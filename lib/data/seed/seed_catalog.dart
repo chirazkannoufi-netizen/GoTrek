@@ -1,5 +1,7 @@
 import '../models/amenity.dart';
 import '../models/attraction.dart';
+import '../models/city_location.dart';
+import '../models/daily_flight.dart';
 import '../models/destination.dart';
 import '../models/experience.dart';
 import '../models/hotel.dart';
@@ -9,25 +11,72 @@ import '../models/trip_offer.dart';
 
 /// The catalogue the app ships with.
 ///
-/// This is the single source of the content that used to be duplicated as
-/// inline `List<Map<String, dynamic>>` literals inside the screen widgets.
-/// When a backend exists, only the repositories need to change — nothing here
-/// leaks into the UI layer.
+/// Two distinct bodies of content:
+///  * the **current city** (New York) — the stays, places and activities the
+///    home screen shows, all tagged with [currentCity]'s id;
+///  * **destinations** — the most-visited cities elsewhere in the world, which
+///    Explore lets you search and book a trip to.
+///
+/// Keeping them separate is what stops Home and Explore being the same list.
 abstract final class SeedCatalog {
-  /// Where the traveller departs from.
-  static const String originCity = 'Algiers';
-  static const String originCode = 'ALG';
+  /// Where the user is, and therefore where flights depart from.
+  static const CityLocation currentCity = CityLocation(
+    id: 'new-york',
+    city: 'New York',
+    country: 'USA',
+    airportCode: 'JFK',
+    isAvailable: true,
+    imageAsset: 'assets/images/new_york_explore.jpg',
+  );
 
-  /// The city the home feed is currently showing.
-  static const String browsingCity = 'New York';
-  static const String browsingCountry = 'USA';
+  /// Offered by the location picker. Only [currentCity] has local content;
+  /// the others are listed so the control is honest about its limits.
+  static List<CityLocation> selectableCities() => const <CityLocation>[
+    currentCity,
+    CityLocation(
+      id: 'london',
+      city: 'London',
+      country: 'United Kingdom',
+      airportCode: 'LHR',
+      isAvailable: false,
+    ),
+    CityLocation(
+      id: 'paris',
+      city: 'Paris',
+      country: 'France',
+      airportCode: 'CDG',
+      isAvailable: false,
+    ),
+    CityLocation(
+      id: 'dubai',
+      city: 'Dubai',
+      country: 'United Arab Emirates',
+      airportCode: 'DXB',
+      isAvailable: false,
+    ),
+    CityLocation(
+      id: 'tokyo',
+      city: 'Tokyo',
+      country: 'Japan',
+      airportCode: 'HND',
+      isAvailable: false,
+    ),
+  ];
 
   static const String emptyFavouritesImage = 'assets/images/no_favourites.jpg';
   static const String welcomeImage = 'assets/images/background.jpg';
   static const String logoImage = 'assets/images/gotrek_logo.png';
 
-  /// Dates are generated relative to [now] so the app never shows a trip that
-  /// has already departed.
+  // ---------------------------------------------------------------------------
+  // Explore: trips to other cities
+  // ---------------------------------------------------------------------------
+
+  /// The most-visited cities travellers fly to, excluding [currentCity].
+  ///
+  /// Dates are generated relative to [now] so nothing is advertised in the
+  /// past. Cities with no photograph in `assets/` carry an empty
+  /// `imageAsset`; the destination cards draw a generated cover for those
+  /// rather than showing a broken image.
   static List<Destination> destinations({DateTime? now}) {
     final DateTime base = _startOfDay(now ?? DateTime.now());
 
@@ -37,112 +86,181 @@ abstract final class SeedCatalog {
         city: 'Paris',
         country: 'France',
         imageAsset: 'assets/images/paris_explore.jpg',
-        distanceKm: 1351,
+        distanceKm: 5837,
         rating: 4.8,
         summary:
             'Boulevards, riverside walks and the best museum mile in Europe. '
-            'Short hop from Algiers, easy to do over a long weekend.',
+            'An overnight flight puts you there for breakfast.',
         categories: <PlaceCategory>[PlaceCategory.city],
         trip: _returnTrip(
           base: base,
           departsInDays: 14,
           toCity: 'Paris',
           toCode: 'CDG',
-          outboundHour: 8,
-          flightMinutes: 155,
+          outboundHour: 19,
+          flightMinutes: 440,
           stayNights: 4,
-          returnHour: 18,
-          price: 189,
-          cabin: 'Economy',
+          returnHour: 13,
+          price: 612,
           seatsLeft: 12,
           flightNumber: 'GT 218',
           returnFlightNumber: 'GT 219',
         ),
       ),
       Destination(
-        id: 'moscow',
-        city: 'Moscow',
-        country: 'Russia',
-        imageAsset: 'assets/images/russia_explore.jpg',
-        distanceKm: 3318,
-        rating: 4.5,
+        id: 'london',
+        city: 'London',
+        country: 'United Kingdom',
+        imageAsset: '',
+        distanceKm: 5570,
+        rating: 4.7,
         summary:
-            'Red Square, the metro palaces and birch forest on the city edge. '
-            'Best paired with a few days outside the ring road.',
-        categories: <PlaceCategory>[PlaceCategory.city, PlaceCategory.forest],
+            'Free museums, a thousand years of history and the best theatre '
+            'anywhere. The shortest hop across the Atlantic.',
+        categories: <PlaceCategory>[PlaceCategory.city],
         trip: _returnTrip(
           base: base,
-          departsInDays: 26,
-          toCity: 'Moscow',
-          toCode: 'SVO',
-          outboundHour: 9,
-          flightMinutes: 300,
-          stayNights: 6,
-          returnHour: 14,
-          price: 264,
-          cabin: 'Economy',
-          seatsLeft: 6,
-          flightNumber: 'GT 440',
-          returnFlightNumber: 'GT 441',
-        ),
-      ),
-      Destination(
-        id: 'toronto',
-        city: 'Toronto',
-        country: 'Canada',
-        imageAsset: 'assets/images/toronto_canada.jpg',
-        distanceKm: 6598,
-        rating: 4.6,
-        summary:
-            'Lakefront city with Algonquin canoe country and dense pine forest '
-            'a few hours north. Good base for a mixed city and outdoors trip.',
-        categories: <PlaceCategory>[
-          PlaceCategory.city,
-          PlaceCategory.lakes,
-          PlaceCategory.forest,
-          PlaceCategory.camp,
-        ],
-        trip: _returnTrip(
-          base: base,
-          departsInDays: 21,
-          toCity: 'Toronto',
-          toCode: 'YYZ',
-          outboundHour: 11,
-          flightMinutes: 555,
-          stayNights: 5,
-          returnHour: 16,
-          price: 542,
-          cabin: 'Economy',
+          departsInDays: 10,
+          toCity: 'London',
+          toCode: 'LHR',
+          outboundHour: 21,
+          flightMinutes: 420,
+          stayNights: 4,
+          returnHour: 11,
+          price: 548,
           seatsLeft: 9,
-          flightNumber: 'GT 802',
-          returnFlightNumber: 'GT 803',
+          flightNumber: 'GT 100',
+          returnFlightNumber: 'GT 101',
         ),
       ),
       Destination(
-        id: 'new-york',
-        city: 'New York',
-        country: 'USA',
-        imageAsset: 'assets/images/new_york_explore.jpg',
-        distanceKm: 6704,
-        rating: 4.9,
+        id: 'bangkok',
+        city: 'Bangkok',
+        country: 'Thailand',
+        imageAsset: '',
+        distanceKm: 13930,
+        rating: 4.7,
         summary:
-            'Five boroughs, a beach at the end of the subway line and more to '
-            'see than one trip allows. The most booked city on GoTrek.',
+            'The most-visited city on earth: temples, canals, night markets, '
+            'and beaches a short hop further south.',
         categories: <PlaceCategory>[PlaceCategory.city, PlaceCategory.beach],
         trip: _returnTrip(
           base: base,
-          departsInDays: 18,
-          toCity: 'New York',
-          toCode: 'JFK',
-          outboundHour: 10,
-          flightMinutes: 570,
+          departsInDays: 38,
+          toCity: 'Bangkok',
+          toCode: 'BKK',
+          outboundHour: 8,
+          flightMinutes: 1110,
+          stayNights: 10,
+          returnHour: 23,
+          price: 1042,
+          seatsLeft: 6,
+          flightNumber: 'GT 770',
+          returnFlightNumber: 'GT 771',
+        ),
+      ),
+      Destination(
+        id: 'dubai',
+        city: 'Dubai',
+        country: 'United Arab Emirates',
+        imageAsset: '',
+        distanceKm: 11000,
+        rating: 4.6,
+        summary:
+            'Skyline, souks and warm water in December. Good as a trip in '
+            'itself or as a stopover further east.',
+        categories: <PlaceCategory>[PlaceCategory.city, PlaceCategory.beach],
+        trip: _returnTrip(
+          base: base,
+          departsInDays: 24,
+          toCity: 'Dubai',
+          toCode: 'DXB',
+          outboundHour: 22,
+          flightMinutes: 740,
+          stayNights: 6,
+          returnHour: 9,
+          price: 878,
+          seatsLeft: 15,
+          flightNumber: 'GT 640',
+          returnFlightNumber: 'GT 641',
+        ),
+      ),
+      Destination(
+        id: 'istanbul',
+        city: 'Istanbul',
+        country: 'Türkiye',
+        imageAsset: '',
+        distanceKm: 8060,
+        rating: 4.7,
+        summary:
+            'Two continents, one city. Hagia Sophia, the Bosphorus ferries '
+            'and the best breakfast on this list.',
+        categories: <PlaceCategory>[PlaceCategory.city],
+        trip: _returnTrip(
+          base: base,
+          departsInDays: 20,
+          toCity: 'Istanbul',
+          toCode: 'IST',
+          outboundHour: 18,
+          flightMinutes: 605,
           stayNights: 5,
-          returnHour: 19,
-          price: 578,
-          cabin: 'Economy',
+          returnHour: 15,
+          price: 704,
           seatsLeft: 4,
-          flightNumber: 'GT 106',
-          returnFlightNumber: 'GT 107',
+          flightNumber: 'GT 330',
+          returnFlightNumber: 'GT 331',
+        ),
+      ),
+      Destination(
+        id: 'rome',
+        city: 'Rome',
+        country: 'Italy',
+        imageAsset: '',
+        distanceKm: 6888,
+        rating: 4.8,
+        summary:
+            'An open-air museum you can walk end to end. Go in spring, before '
+            'the queues and the heat arrive together.',
+        categories: <PlaceCategory>[PlaceCategory.city],
+        trip: _returnTrip(
+          base: base,
+          departsInDays: 30,
+          toCity: 'Rome',
+          toCode: 'FCO',
+          outboundHour: 17,
+          flightMinutes: 540,
+          stayNights: 6,
+          returnHour: 12,
+          price: 668,
+          seatsLeft: 11,
+          flightNumber: 'GT 410',
+          returnFlightNumber: 'GT 411',
+        ),
+      ),
+      Destination(
+        id: 'barcelona',
+        city: 'Barcelona',
+        country: 'Spain',
+        imageAsset: '',
+        distanceKm: 6150,
+        rating: 4.7,
+        summary:
+            'Gaudí, tapas and a city beach you can reach on the metro. Easy '
+            'to combine with the rest of Catalonia.',
+        categories: <PlaceCategory>[PlaceCategory.city, PlaceCategory.beach],
+        trip: _returnTrip(
+          base: base,
+          departsInDays: 27,
+          toCity: 'Barcelona',
+          toCode: 'BCN',
+          outboundHour: 18,
+          flightMinutes: 490,
+          stayNights: 5,
+          returnHour: 14,
+          price: 634,
+          seatsLeft: 8,
+          flightNumber: 'GT 520',
+          returnFlightNumber: 'GT 521',
         ),
       ),
       Destination(
@@ -150,7 +268,7 @@ abstract final class SeedCatalog {
         city: 'Tokyo',
         country: 'Japan',
         imageAsset: 'assets/images/tokyo_explore.jpg',
-        distanceKm: 11304,
+        distanceKm: 10850,
         rating: 4.9,
         summary:
             'Neon districts at street level and Hakone trailheads two hours '
@@ -164,19 +282,203 @@ abstract final class SeedCatalog {
           departsInDays: 34,
           toCity: 'Tokyo',
           toCode: 'HND',
-          outboundHour: 7,
-          flightMinutes: 900,
+          outboundHour: 13,
+          flightMinutes: 840,
           stayNights: 8,
-          returnHour: 10,
-          price: 894,
-          cabin: 'Economy',
-          seatsLeft: 15,
+          returnHour: 17,
+          price: 1128,
+          seatsLeft: 7,
           flightNumber: 'GT 550',
           returnFlightNumber: 'GT 551',
         ),
       ),
+      Destination(
+        id: 'toronto',
+        city: 'Toronto',
+        country: 'Canada',
+        imageAsset: 'assets/images/toronto_canada.jpg',
+        distanceKm: 550,
+        rating: 4.6,
+        summary:
+            'Lakefront city with Algonquin canoe country and dense pine '
+            'forest a few hours north. The short-haul option.',
+        categories: <PlaceCategory>[
+          PlaceCategory.city,
+          PlaceCategory.lakes,
+          PlaceCategory.forest,
+          PlaceCategory.camp,
+        ],
+        trip: _returnTrip(
+          base: base,
+          departsInDays: 12,
+          toCity: 'Toronto',
+          toCode: 'YYZ',
+          outboundHour: 7,
+          flightMinutes: 95,
+          stayNights: 3,
+          returnHour: 19,
+          price: 214,
+          seatsLeft: 18,
+          flightNumber: 'GT 802',
+          returnFlightNumber: 'GT 803',
+        ),
+      ),
+      Destination(
+        id: 'moscow',
+        city: 'Moscow',
+        country: 'Russia',
+        imageAsset: 'assets/images/russia_explore.jpg',
+        distanceKm: 7519,
+        rating: 4.5,
+        summary:
+            'Red Square, the metro palaces and birch forest on the city edge. '
+            'Best paired with a few days outside the ring road.',
+        categories: <PlaceCategory>[PlaceCategory.city, PlaceCategory.forest],
+        trip: _returnTrip(
+          base: base,
+          departsInDays: 26,
+          toCity: 'Moscow',
+          toCode: 'SVO',
+          outboundHour: 16,
+          flightMinutes: 580,
+          stayNights: 6,
+          returnHour: 13,
+          price: 796,
+          seatsLeft: 5,
+          flightNumber: 'GT 440',
+          returnFlightNumber: 'GT 441',
+        ),
+      ),
     ];
   }
+
+  // ---------------------------------------------------------------------------
+  // Flights leaving today
+  // ---------------------------------------------------------------------------
+
+  /// Today's departures from [currentCity], for the flights board.
+  static List<DailyFlight> dailyFlights({DateTime? now}) {
+    final DateTime base = _startOfDay(now ?? DateTime.now());
+
+    final List<_FlightSeed> seeds = <_FlightSeed>[
+      const _FlightSeed(
+        'GT 802',
+        'GoTrek Air',
+        'YYZ',
+        'Toronto',
+        6,
+        15,
+        95,
+        214,
+        18,
+      ),
+      const _FlightSeed(
+        'GT 100',
+        'GoTrek Air',
+        'LHR',
+        'London',
+        8,
+        40,
+        420,
+        548,
+        9,
+      ),
+      const _FlightSeed(
+        'GT 410',
+        'Alpine Air',
+        'FCO',
+        'Rome',
+        10,
+        5,
+        540,
+        668,
+        11,
+      ),
+      const _FlightSeed(
+        'GT 218',
+        'GoTrek Air',
+        'CDG',
+        'Paris',
+        12,
+        30,
+        440,
+        612,
+        12,
+      ),
+      const _FlightSeed(
+        'GT 640',
+        'Gulf Star',
+        'DXB',
+        'Dubai',
+        14,
+        50,
+        740,
+        878,
+        15,
+      ),
+      const _FlightSeed(
+        'GT 550',
+        'Pacific Blue',
+        'HND',
+        'Tokyo',
+        16,
+        20,
+        840,
+        1128,
+        7,
+      ),
+      const _FlightSeed(
+        'GT 330',
+        'Bosphorus',
+        'IST',
+        'Istanbul',
+        18,
+        45,
+        605,
+        704,
+        4,
+      ),
+      const _FlightSeed(
+        'GT 520',
+        'Iberia Wing',
+        'BCN',
+        'Barcelona',
+        21,
+        10,
+        490,
+        634,
+        8,
+      ),
+    ];
+
+    return <DailyFlight>[
+      for (final _FlightSeed seed in seeds)
+        () {
+          final DateTime departsAt = base.add(
+            Duration(hours: seed.hour, minutes: seed.minute),
+          );
+          return DailyFlight(
+            id: 'flight-${seed.flightNumber.replaceAll(' ', '-').toLowerCase()}',
+            airline: seed.airline,
+            flightNumber: seed.flightNumber,
+            fromCode: currentCity.airportCode,
+            fromCity: currentCity.city,
+            toCode: seed.toCode,
+            toCity: seed.toCity,
+            departsAt: departsAt,
+            arrivesAt: departsAt.add(Duration(minutes: seed.minutes)),
+            price: seed.price,
+            cabin: 'Economy',
+            seatsLeft: seed.seatsLeft,
+            isDirect: seed.minutes < 900,
+          );
+        }(),
+    ];
+  }
+
+  // ---------------------------------------------------------------------------
+  // Current-city content
+  // ---------------------------------------------------------------------------
 
   static List<Hotel> hotels() => const <Hotel>[
     Hotel(
@@ -411,10 +713,10 @@ abstract final class SeedCatalog {
     required int stayNights,
     required int returnHour,
     required double price,
-    required String cabin,
     required int seatsLeft,
     required String flightNumber,
     required String returnFlightNumber,
+    String cabin = 'Economy',
   }) {
     final DateTime outboundDeparture = base.add(
       Duration(days: departsInDays, hours: outboundHour),
@@ -425,8 +727,8 @@ abstract final class SeedCatalog {
 
     return TripOffer(
       outbound: FlightLeg(
-        fromCity: originCity,
-        fromCode: originCode,
+        fromCity: currentCity.city,
+        fromCode: currentCity.airportCode,
         toCity: toCity,
         toCode: toCode,
         departsAt: outboundDeparture,
@@ -436,8 +738,8 @@ abstract final class SeedCatalog {
       inbound: FlightLeg(
         fromCity: toCity,
         fromCode: toCode,
-        toCity: originCity,
-        toCode: originCode,
+        toCity: currentCity.city,
+        toCode: currentCity.airportCode,
         departsAt: inboundDeparture,
         arrivesAt: inboundDeparture.add(Duration(minutes: flightMinutes)),
         flightNumber: returnFlightNumber,
@@ -447,4 +749,29 @@ abstract final class SeedCatalog {
       seatsLeft: seatsLeft,
     );
   }
+}
+
+/// Compact row for the daily flight table above.
+class _FlightSeed {
+  const _FlightSeed(
+    this.flightNumber,
+    this.airline,
+    this.toCode,
+    this.toCity,
+    this.hour,
+    this.minute,
+    this.minutes,
+    this.price,
+    this.seatsLeft,
+  );
+
+  final String flightNumber;
+  final String airline;
+  final String toCode;
+  final String toCity;
+  final int hour;
+  final int minute;
+  final int minutes;
+  final double price;
+  final int seatsLeft;
 }

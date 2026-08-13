@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/catalog_item.dart';
 import '../../theme/app_spacing.dart';
-import '../app_image.dart';
+import '../city_cover.dart';
 import '../favorite_button.dart';
 import '../rating_pill.dart';
 
 /// One row on the Favourites screen.
 ///
 /// Works for all four content types because they share [CatalogItem].
-class SavedItemCard extends StatelessWidget {
-  const SavedItemCard({super.key, required this.item, required this.onTap});
+class CatalogItemCard extends StatelessWidget {
+  const CatalogItemCard({super.key, required this.item, required this.onTap});
 
   final CatalogItem item;
   final VoidCallback onTap;
@@ -34,8 +34,9 @@ class SavedItemCard extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpacing.md),
           child: Row(
             children: <Widget>[
-              AppImage(
-                item.imageAsset,
+              CityCover(
+                imageAsset: item.imageAsset,
+                title: item.title,
                 width: 84,
                 height: 84,
                 borderRadius: AppRadius.allMd,

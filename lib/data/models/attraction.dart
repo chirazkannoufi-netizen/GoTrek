@@ -39,4 +39,11 @@ class Attraction extends CatalogItem {
 
   @override
   double? get priceFrom => null;
+
+  bool matches(String query) {
+    final String needle = query.trim().toLowerCase();
+    if (needle.isEmpty) return true;
+    return name.toLowerCase().contains(needle) ||
+        area.toLowerCase().contains(needle);
+  }
 }

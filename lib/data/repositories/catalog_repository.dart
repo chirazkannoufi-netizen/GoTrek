@@ -1,6 +1,8 @@
 import '../../core/theme/app_spacing.dart';
 import '../models/attraction.dart';
 import '../models/catalog_item.dart';
+import '../models/city_location.dart';
+import '../models/daily_flight.dart';
 import '../models/destination.dart';
 import '../models/experience.dart';
 import '../models/hotel.dart';
@@ -20,6 +22,7 @@ class CatalogRepository {
   final DateTime? _now;
 
   List<Destination>? _destinations;
+  List<DailyFlight>? _dailyFlights;
   List<Hotel>? _hotels;
   List<Attraction>? _attractions;
   List<Experience>? _experiences;
@@ -61,15 +64,33 @@ class CatalogRepository {
     throw CatalogNotFoundException('No hotel with id "$id"');
   }
 
-  Future<List<Attraction>> attractions() async {
+  Future<List<Attraction>> attractions({String? cityId}) async {
     await _settle(_attractions != null);
-    return _attractions ??= SeedCatalog.attractions();
+    final List<Attraction> all = _attractions ??= SeedCatalog.attractions();
+    if (cityId == null) return all;
+    return all
+        .where((Attraction attraction) => attraction.destinationId == cityId)
+        .toList();
   }
 
-  Future<List<Experience>> experiences() async {
+  Future<List<Experience>> experiences({String? cityId}) async {
     await _settle(_experiences != null);
-    return _experiences ??= SeedCatalog.experiences(now: _now);
+    final List<Experience> all =
+        _experiences ??= SeedCatalog.experiences(now: _now);
+    if (cityId == null) return all;
+    return all
+        .where((Experience experience) => experience.destinationId == cityId)
+        .toList();
   }
+
+  /// Departures leaving [SeedCatalog.currentCity] today.
+  Future<List<DailyFlight>> dailyFlights() async {
+    await _settle(_dailyFlights != null);
+    return _dailyFlights ??= SeedCatalog.dailyFlights(now: _now);
+  }
+
+  Future<List<CityLocation>> selectableCities() async =>
+      SeedCatalog.selectableCities();
 
   Future<List<PaymentCard>> paymentCards() async => SeedCatalog.paymentCards();
 

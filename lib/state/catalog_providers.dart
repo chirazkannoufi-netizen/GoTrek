@@ -1,12 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/models/attraction.dart';
+import '../data/models/catalog_item.dart';
+import '../data/models/city_location.dart';
+import '../data/models/daily_flight.dart';
 import '../data/models/destination.dart';
 import '../data/models/experience.dart';
 import '../data/models/hotel.dart';
 import '../data/models/payment_card.dart';
 import '../data/models/place_category.dart';
 import '../data/repositories/catalog_repository.dart';
+import '../data/seed/seed_catalog.dart';
 import 'repository_providers.dart';
 
 final FutureProvider<List<Destination>> destinationsProvider =
@@ -51,6 +55,107 @@ final FutureProviderFamily<List<Hotel>, String> hotelsForDestinationProvider =
       (Ref ref, String destinationId) => ref
           .watch(catalogRepositoryProvider)
           .hotels(destinationId: destinationId),
+    );
+
+// ---------------------------------------------------------------------------
+// Current city
+// ---------------------------------------------------------------------------
+
+/// The city the home screen is showing. Changed through the location picker.
+class CurrentCityController extends Notifier<CityLocation> {
+  @override
+  CityLocation build() => SeedCatalog.currentCity;
+
+  void select(CityLocation city) => state = city;
+}
+
+final NotifierProvider<CurrentCityController, CityLocation>
+currentCityProvider = NotifierProvider<CurrentCityController, CityLocation>(
+  CurrentCityController.new,
+);
+
+final FutureProvider<List<CityLocation>> selectableCitiesProvider =
+    FutureProvider<List<CityLocation>>(
+      (Ref ref) => ref.watch(catalogRepositoryProvider).selectableCities(),
+    );
+
+/// Stays, places and things to do in the current city — the home feed.
+final FutureProvider<List<Hotel>> cityHotelsProvider =
+    FutureProvider<List<Hotel>>((Ref ref) {
+      final CityLocation city = ref.watch(currentCityProvider);
+      return ref
+          .watch(catalogRepositoryProvider)
+          .hotels(destinationId: city.id);
+    });
+
+final FutureProvider<List<Attraction>> cityAttractionsProvider =
+    FutureProvider<List<Attraction>>((Ref ref) {
+      final CityLocation city = ref.watch(currentCityProvider);
+      return ref.watch(catalogRepositoryProvider).attractions(cityId: city.id);
+    });
+
+final FutureProvider<List<Experience>> cityExperiencesProvider =
+    FutureProvider<List<Experience>>((Ref ref) {
+      final CityLocation city = ref.watch(currentCityProvider);
+      return ref.watch(catalogRepositoryProvider).experiences(cityId: city.id);
+    });
+
+// ---------------------------------------------------------------------------
+// Home search — stays and places in the current city, never a redirect
+// ---------------------------------------------------------------------------
+
+class HomeSearchController extends Notifier<String> {
+  @override
+  String build() => '';
+
+  void setQuery(String query) => state = query;
+
+  void clear() => state = '';
+}
+
+final NotifierProvider<HomeSearchController, String> homeSearchProvider =
+    NotifierProvider<HomeSearchController, String>(HomeSearchController.new);
+
+/// Hotels, places and activities in the current city matching the home
+/// search box. Empty query yields an empty list — the feed is shown instead.
+final Provider<AsyncValue<List<CatalogItem>>> homeSearchResultsProvider =
+    Provider<AsyncValue<List<CatalogItem>>>((Ref ref) {
+      final String query = ref.watch(homeSearchProvider).trim();
+      if (query.isEmpty) {
+        return const AsyncValue<List<CatalogItem>>.data(<CatalogItem>[]);
+      }
+
+      final AsyncValue<List<Hotel>> hotels = ref.watch(cityHotelsProvider);
+      final AsyncValue<List<Attraction>> attractions = ref.watch(
+        cityAttractionsProvider,
+      );
+      final AsyncValue<List<Experience>> experiences = ref.watch(
+        cityExperiencesProvider,
+      );
+
+      if (hotels.isLoading || attractions.isLoading || experiences.isLoading) {
+        return const AsyncValue<List<CatalogItem>>.loading();
+      }
+      final Object? error =
+          hotels.error ?? attractions.error ?? experiences.error;
+      if (error != null) {
+        return AsyncValue<List<CatalogItem>>.error(error, StackTrace.current);
+      }
+
+      return AsyncValue<List<CatalogItem>>.data(<CatalogItem>[
+        ...?hotels.value?.where((Hotel h) => h.matches(query)),
+        ...?attractions.value?.where((Attraction a) => a.matches(query)),
+        ...?experiences.value?.where((Experience e) => e.matches(query)),
+      ]);
+    });
+
+// ---------------------------------------------------------------------------
+// Flights leaving today
+// ---------------------------------------------------------------------------
+
+final FutureProvider<List<DailyFlight>> dailyFlightsProvider =
+    FutureProvider<List<DailyFlight>>(
+      (Ref ref) => ref.watch(catalogRepositoryProvider).dailyFlights(),
     );
 
 // ---------------------------------------------------------------------------
