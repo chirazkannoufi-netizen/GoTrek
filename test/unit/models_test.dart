@@ -70,7 +70,10 @@ void main() {
 
     test('the return leg comes back to the origin', () {
       for (final Destination destination in destinations) {
-        expect(destination.trip.inbound.toCode, SeedCatalog.originCode);
+        expect(
+          destination.trip.inbound.toCode,
+          SeedCatalog.currentCity.airportCode,
+        );
       }
     });
 

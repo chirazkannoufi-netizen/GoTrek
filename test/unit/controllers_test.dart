@@ -223,7 +223,11 @@ void main() {
 
       final List<Destination> results =
           container.read(filteredDestinationsProvider).value!;
-      expect(results.map((Destination d) => d.id), <String>['new-york']);
+      expect(results.map((Destination d) => d.id), <String>[
+        'bangkok',
+        'dubai',
+        'barcelona',
+      ]);
     });
 
     test('tapping the selected category again clears it', () async {

@@ -10,7 +10,7 @@ void main() {
   testWidgets('lists every seeded destination', (WidgetTester tester) async {
     await pumpAppWidget(tester, const ExploreScreen());
 
-    expect(find.text('5 destinations'), findsOneWidget);
+    expect(find.text('10 destinations'), findsOneWidget);
     expect(find.byType(DestinationHeroCard), findsOneWidget);
     // The remaining four are in a lazy grid, so only the on-screen ones are
     // built at this viewport size.
@@ -51,7 +51,7 @@ void main() {
     await tester.tap(find.text('Clear filters'));
     await tester.pumpAndSettle();
 
-    expect(find.text('5 destinations'), findsOneWidget);
+    expect(find.text('10 destinations'), findsOneWidget);
   });
 
   testWidgets('a category chip filters to the destinations tagged with it', (
@@ -62,7 +62,7 @@ void main() {
     await tester.tap(find.widgetWithText(FilterChip, 'Beach'));
     await tester.pumpAndSettle();
 
-    expect(find.text('1 destination in Beach'), findsOneWidget);
-    expect(find.text('New York, USA'), findsOneWidget);
+    expect(find.text('3 destinations in Beach'), findsOneWidget);
+    expect(find.text('Bangkok, Thailand'), findsOneWidget);
   });
 }

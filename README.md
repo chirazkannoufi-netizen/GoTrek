@@ -55,23 +55,27 @@ lib/
 
 Everything listed here works in the app as shipped.
 
-- **Onboarding** — swipe-to-start welcome screen; a restored session skips the login form.
+- **Onboarding** — swipe-to-start welcome screen over a softened backdrop.
+- **Guest access** — the whole app is browsable without an account. Signing in is only asked for when an action belongs to an account (saving a place, booking, viewing your bookings), and the action resumes automatically once you are in.
 - **Authentication** — login and sign-up with full form validation, password visibility toggle, and a four-digit confirmation step. The session persists across restarts.
-- **Home** — greeting, category filters, service shortcuts, and rails for most-visited attractions, featured stays and guided experiences. Pull to refresh.
-- **Explore** — live search across destinations plus category filtering, with a hero card and a responsive grid.
+- **Home = your city** — stays, landmarks and activities in the city you are in, with a search box that filters within that city. The location control opens a picker; the Flights shortcut opens the departures board.
+- **Explore = trips elsewhere** — the world's most-visited destinations, searchable and filterable by category, each with a return trip you can book. Your current city is deliberately excluded.
+- **Flights** — today's departures from your city with times, durations, fares and seats left.
 - **Trip details** — the real outbound and return legs with times, airport codes and durations, a traveller stepper, and the stays available in that city.
 - **Stays** — search and a working sort (price ascending/descending, top rated); detail screens with facilities, an expandable description, a date-range picker and a room stepper.
 - **Experiences** — guided tours with duration, next date and a guest stepper.
 - **Checkout** — itemised price breakdown with a service fee, payment-method selection, and a booking that is actually stored.
 - **Bookings** — every confirmed booking with its reference and status, and the ability to cancel one.
 - **Favourites** — save destinations, stays, experiences and attractions; persisted on the device and reflected in a badge on the nav bar.
-- **Throughout** — loading, empty and error states; dark mode; layouts that adapt from phone to desktop widths.
+- **Throughout** — loading, empty and error states; a light default theme (a dark theme is built but not wired to the device setting); layouts that adapt from phone to desktop widths.
 
 ## Current State & Known Limitations
 
 This repository is the **frontend implementation**. To be precise about what is and is not real:
 
 - **No backend server.** `database/schema.sql` defines the intended data model, but nothing serves it.
+- **Only one city has local content.** New York is populated; the location picker lists other cities but marks them as unavailable rather than pretending otherwise.
+- **Some destinations have no photography.** The cities added to Explore have no licensed images in `assets/`, so their cards draw a generated gradient cover keyed off the city name instead of a stock photo.
 - **Data is seeded locally.** `lib/data/seed/seed_catalog.dart` holds the catalogue. The repositories return it behind a small artificial delay so the loading states are genuinely exercised. Trip dates are generated relative to today, so nothing shows as already departed.
 - **Authentication is local.** Any well-formed email and password opens a session; there is no credential store and no OAuth2/JWT yet. The sign-up confirmation code is generated on the device and displayed on screen, because there is no SMS gateway — the check itself is real, and a wrong code is rejected.
 - **Payment is not processed.** Choosing a card and confirming stores a booking locally; no payment provider is contacted. No card numbers are captured or stored anywhere.
@@ -120,12 +124,12 @@ flutter test
 
 ## Tests
 
-57 tests covering:
+61 tests covering:
 
 - **Unit** — validators, display formatters, model arithmetic and JSON round-trips.
 - **Controllers** — favourites and bookings including their persistence, and the catalogue search/filter/sort logic.
 - **Widget** — the explore, stays and favourites screens.
-- **End to end** — `test/widget/app_flow_test.dart` boots the real app at a phone viewport and walks welcome → login → home → explore → trip detail → checkout → confirmation → bookings, asserting the total is carried through correctly.
+- **End to end** — `test/widget/app_flow_test.dart` boots the real app at a phone viewport and covers guest browsing, the sign-in gate on saving and booking, the location picker, home search, the flights board, and welcome → explore → trip detail → checkout → confirmation.
 
 ## Documentation
 
