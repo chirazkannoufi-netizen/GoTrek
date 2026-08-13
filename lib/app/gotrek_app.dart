@@ -13,7 +13,9 @@ class GoTrekApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
+      // Light is the product default; the dark theme stays available but is
+      // not driven by the device setting.
+      themeMode: ThemeMode.light,
       initialRoute: AppRoutes.welcome,
       routes: AppRoutes.namedRoutes,
     );

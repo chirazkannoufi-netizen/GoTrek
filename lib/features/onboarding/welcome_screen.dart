@@ -1,38 +1,35 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/app_routes.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/app_image.dart';
 import '../../data/seed/seed_catalog.dart';
-import '../../state/auth_controller.dart';
 
-/// Onboarding screen with the slide-to-start control from the original design.
-class WelcomeScreen extends ConsumerStatefulWidget {
+/// Onboarding screen.
+///
+/// The photograph is washed out behind a light veil so the logo carries the
+/// screen; the logo itself sits dead centre and the slide control is anchored
+/// to the bottom, so neither moves as the other changes size.
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
   @override
-  ConsumerState<WelcomeScreen> createState() => _WelcomeScreenState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
-    with TickerProviderStateMixin {
-  static const double _knobSize = 58;
-  static const double _trackHeight = 72;
-  static const double _trackPadding = 7;
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  static const double _knobSize = 56;
+  static const double _trackHeight = 68;
+  static const double _trackPadding = 6;
   static const double _completionThreshold = 0.9;
 
   late final AnimationController _snapController = AnimationController(
     vsync: this,
     duration: AppDurations.medium,
   )..addListener(_applySnapValue);
-
-  late final AnimationController _pulseController = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 900),
-  )..repeat(reverse: true);
 
   Animation<double>? _snapAnimation;
   double _dragX = 0;
@@ -42,7 +39,6 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
   @override
   void dispose() {
     _snapController.dispose();
-    _pulseController.dispose();
     super.dispose();
   }
 
@@ -76,63 +72,114 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
     _snapController.forward(from: 0);
   }
 
-  /// A restored session skips the login form.
+  /// Everyone lands on the home screen — browsing does not need an account.
   void _complete() {
     if (_completed) return;
     setState(() => _completed = true);
     _snapController.stop();
-    _pulseController.stop();
-
-    final bool signedIn = ref.read(currentUserProvider) != null;
-    Navigator.of(
-      context,
-    ).pushReplacementNamed(signedIn ? AppRoutes.home : AppRoutes.login);
+    Navigator.of(context).pushReplacementNamed(AppRoutes.home);
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ColorScheme scheme = theme.colorScheme;
 
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           const AppImage(SeedCatalog.welcomeImage),
-          const ImageScrim(opacity: 0.85),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Spacer(flex: 2),
-                  Image.asset(
-                    SeedCatalog.logoImage,
-                    height: 72,
-                    errorBuilder:
-                        (BuildContext context, Object error, StackTrace? _) =>
-                            const SizedBox.shrink(),
-                  ),
-                  const SizedBox(height: AppSpacing.xxl),
-                  Text(
-                    'Every trip starts here',
-                    style: theme.textTheme.displaySmall?.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  Text(
-                    'Find a destination, book the flight and the stay, and '
-                    'keep the whole trip in one place.',
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: Colors.white70,
-                    ),
-                  ),
-                  const Spacer(flex: 3),
-                  Center(child: _buildSlider(theme)),
-                  const SizedBox(height: AppSpacing.xxl),
+
+          // Light veil: keeps a hint of the photograph without letting it
+          // compete with the logo.
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  scheme.surface.withValues(alpha: 0.82),
+                  scheme.surface.withValues(alpha: 0.92),
+                  scheme.surface.withValues(alpha: 0.98),
                 ],
+                stops: const <double>[0, 0.55, 1],
               ),
+            ),
+          ),
+
+          SafeArea(
+            child: Stack(
+              children: <Widget>[
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xxl,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Image.asset(
+                          SeedCatalog.logoImage,
+                          height: 132,
+                          fit: BoxFit.contain,
+                          errorBuilder:
+                              (
+                                BuildContext context,
+                                Object error,
+                                StackTrace? _,
+                              ) => Text(
+                                'GoTrek',
+                                style: theme.textTheme.displaySmall?.copyWith(
+                                  color: scheme.primary,
+                                ),
+                              ),
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+                        Text(
+                          'Every trip starts here',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            color: scheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 320),
+                          child: Text(
+                            'Find a place to stay, book the flight and plan '
+                            'the whole trip in one place.',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: scheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                Positioned(
+                  left: AppSpacing.xxl,
+                  right: AppSpacing.xxl,
+                  bottom: AppSpacing.xxxl,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Center(child: _buildSlider(theme)),
+                      const SizedBox(height: AppSpacing.lg),
+                      Text(
+                        'No account needed to look around',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -141,6 +188,8 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
   }
 
   Widget _buildSlider(ThemeData theme) {
+    final ColorScheme scheme = theme.colorScheme;
+
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 360),
       child: LayoutBuilder(
@@ -155,9 +204,16 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
             height: _trackHeight,
             padding: const EdgeInsets.all(_trackPadding),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.18),
+              color: scheme.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(_trackHeight / 2),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+              border: Border.all(color: scheme.outlineVariant),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: scheme.shadow.withValues(alpha: 0.08),
+                  blurRadius: 18,
+                  offset: const Offset(0, 6),
+                ),
+              ],
             ),
             child: Stack(
               children: <Widget>[
@@ -165,44 +221,28 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                   child: Opacity(
                     opacity: 1 - progress,
                     child: Text(
-                      'Swipe to start',
+                      'Slide to start',
                       style: theme.textTheme.titleSmall?.copyWith(
-                        color: Colors.white,
-                        letterSpacing: 0.4,
+                        color: scheme.onSurfaceVariant,
+                        letterSpacing: 0.3,
                       ),
                     ),
                   ),
                 ),
-                AnimatedBuilder(
-                  animation: _pulseController,
-                  builder: (BuildContext context, Widget? child) {
-                    final double nudge =
-                        _dragX == 0 && !_completed
-                            ? _pulseController.value * 8
-                            : 0;
-                    return Transform.translate(
-                      offset: Offset(_dragX + nudge, 0),
-                      child: child,
-                    );
-                  },
+                Transform.translate(
+                  offset: Offset(_dragX, 0),
                   child: GestureDetector(
                     onHorizontalDragUpdate: _onDragUpdate,
                     onHorizontalDragEnd: _onDragEnd,
                     child: Semantics(
                       button: true,
-                      label: 'Swipe to start',
+                      label: 'Slide to start',
                       child: Container(
                         width: _knobSize,
                         height: _knobSize,
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.primary,
+                          color: scheme.primary,
                           shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: Icon(
-                          Icons.arrow_forward_rounded,
-                          color: theme.colorScheme.onPrimary,
-                          size: 26,
                         ),
                       ),
                     ),
