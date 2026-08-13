@@ -4,7 +4,7 @@ import '../../app/app_routes.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/utils/formatters.dart';
-import '../../core/widgets/app_image.dart';
+import '../../core/widgets/city_cover.dart';
 import '../../data/models/booking.dart';
 
 class BookingConfirmedScreen extends StatelessWidget {
@@ -59,8 +59,9 @@ class BookingConfirmedScreen extends StatelessWidget {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              AppImage(
-                                booking.imageAsset,
+                              CityCover(
+                                imageAsset: booking.imageAsset,
+                                title: booking.title,
                                 width: 72,
                                 height: 72,
                                 borderRadius: AppRadius.allMd,

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/app_routes.dart';
 import '../../core/theme/app_spacing.dart';
-import '../../core/widgets/cards/saved_item_card.dart';
+import '../../core/widgets/cards/catalog_item_card.dart';
 import '../../core/widgets/state_views.dart';
 import '../../data/models/catalog_item.dart';
 import '../../data/seed/seed_catalog.dart';
@@ -52,8 +52,8 @@ class FavoritesScreen extends ConsumerWidget {
                 onPressed:
                     () => ref
                         .read(navigationProvider.notifier)
-                        .select(AppTab.explore),
-                child: const Text('Start exploring'),
+                        .select(AppTab.home),
+                child: const Text('Start browsing'),
               ),
             );
           }
@@ -74,7 +74,7 @@ class FavoritesScreen extends ConsumerWidget {
             itemCount: items.length,
             itemBuilder: (BuildContext context, int index) {
               final CatalogItem item = items[index];
-              return SavedItemCard(
+              return CatalogItemCard(
                 item: item,
                 onTap: () => AppRoutes.openCatalogItem(context, item),
               );

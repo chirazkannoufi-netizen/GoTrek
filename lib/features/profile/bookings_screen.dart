@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/utils/formatters.dart';
-import '../../core/widgets/app_image.dart';
+import '../../core/widgets/city_cover.dart';
 import '../../core/widgets/state_views.dart';
 import '../../data/models/booking.dart';
 import '../../state/bookings_controller.dart';
@@ -86,8 +86,9 @@ class _BookingCard extends ConsumerWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                AppImage(
-                  booking.imageAsset,
+                CityCover(
+                  imageAsset: booking.imageAsset,
+                  title: booking.title,
                   width: 72,
                   height: 72,
                   borderRadius: AppRadius.allMd,

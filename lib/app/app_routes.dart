@@ -13,6 +13,8 @@ import '../features/checkout/checkout_screen.dart';
 import '../features/destination/destination_details_screen.dart';
 import '../features/experiences/experience_details_screen.dart';
 import '../features/experiences/experiences_screen.dart';
+import '../features/flights/flights_screen.dart';
+import '../features/location/location_picker_sheet.dart';
 import '../features/onboarding/welcome_screen.dart';
 import '../features/profile/bookings_screen.dart';
 import '../features/stays/hotel_details_screen.dart';
@@ -101,6 +103,19 @@ abstract final class AppRoutes {
 
   static Future<void> openBookings(BuildContext context) =>
       Navigator.of(context).push(_page<void>(const BookingsScreen()));
+
+  /// Today's departures from the user's city.
+  static Future<void> openFlights(BuildContext context) =>
+      Navigator.of(context).push(_page<void>(const FlightsScreen()));
+
+  /// "Choose your location" — opened from the home app bar, never Explore.
+  static Future<void> showLocationPicker(BuildContext context) =>
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        isScrollControlled: true,
+        builder: (_) => const LocationPickerSheet(),
+      );
 
   // --- Checkout -------------------------------------------------------------
 

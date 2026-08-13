@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_spacing.dart';
 import '../../core/utils/formatters.dart';
-import '../../core/widgets/app_image.dart';
+import '../../core/widgets/city_cover.dart';
 import '../../core/widgets/feedback.dart';
 import '../../core/widgets/state_views.dart';
 import '../../data/models/booking.dart';
@@ -181,8 +181,9 @@ class _SummaryCard extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Row(
           children: <Widget>[
-            AppImage(
-              draft.imageAsset,
+            CityCover(
+              imageAsset: draft.imageAsset,
+              title: draft.title,
               width: 88,
               height: 88,
               borderRadius: AppRadius.allMd,

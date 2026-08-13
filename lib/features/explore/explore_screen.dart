@@ -10,6 +10,9 @@ import '../../core/widgets/state_views.dart';
 import '../../data/models/destination.dart';
 import '../../state/catalog_providers.dart';
 
+/// Explore is for trips **away from** the current city: the most-visited
+/// destinations in the world, searchable and bookable. The city the user is
+/// already in belongs to Home, so it is deliberately not in this list.
 class ExploreScreen extends ConsumerWidget {
   const ExploreScreen({super.key});
 
@@ -27,6 +30,18 @@ class ExploreScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Explore'),
         automaticallyImplyLeading: false,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(26),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+            child: Text(
+              'Trips from ${ref.watch(currentCityProvider).city}',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -38,7 +53,7 @@ class ExploreScreen extends ConsumerWidget {
               AppSpacing.md,
             ),
             child: AppSearchField(
-              hintText: 'Search destinations',
+              hintText: 'Where do you want to go?',
               initialValue: filter.query,
               onChanged: controller.setQuery,
             ),
@@ -88,6 +103,7 @@ class _Results extends ConsumerWidget {
     if (results.isEmpty) {
       return EmptyView(
         title: 'No destinations match that',
+        icon: Icons.travel_explore_outlined,
         message:
             filter.category == null
                 ? 'Try a different search term.'

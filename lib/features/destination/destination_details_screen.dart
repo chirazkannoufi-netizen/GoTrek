@@ -349,10 +349,6 @@ class _StaysForDestination extends ConsumerWidget {
                   ),
                   const SizedBox(height: AppSpacing.md),
                 ],
-                OutlinedButton(
-                  onPressed: () => AppRoutes.openStays(context),
-                  child: const Text('See all stays'),
-                ),
               ],
             );
           },
